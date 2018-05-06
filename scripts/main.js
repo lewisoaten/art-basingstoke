@@ -2,9 +2,9 @@ $(document).ready(function() {
   var helpBtn = $(".help"),
     gotitBtn = $(".gotit");
 
-  // for (var artwork in data) {
-  //   createAsset(data[artwork])
-  // }
+  for (var artwork in data) {
+    createAsset(data[artwork])
+  }
 
   helpBtn.click(function(e) {
     e.preventDefault();

@@ -1,40 +1,35 @@
-import { data } from "./artList";
+$(document).ready(function() {
+  var helpBtn = $(".help");
 
-(function() {
-  "use strict";
+  for (var artwork in data) {
+    createAsset(data[artwork])
+  }
 
-  $(document).ready(function() {
-    var helpBtn = $(".help");
+  helpBtn.click(function(e) {
+    e.preventDefault();
+    console.log($("#video_demo")[0]);
+    $("#video_demo")[0].style.display = "block";
+  });
 
-    for (var artwork in data) {
-      createAsset(data[artwork])
-    }
+  function createAsset(currentData) {
+    let marker = document.createElement("a-marker");
+    marker.setAttribute("type", "barcode");
+    marker.setAttribute("value", currentData.id)
 
-    helpBtn.click(function(e) {
-      e.preventDefault();
-      console.log($("#video_demo")[0]);
-      $("#video_demo")[0].style.display = "block";
-    });
+    let plane = document.createElement("a-plane")
+    plane.setAttribute("id", "canvas_" + currentData.id);
+    plane.setAttribute("rotation", "-90 0 0");
+    plane.setAttribute("position", "0 0 0");
+    plane.setAttribute("width", "5");
+    plane.setAttribute("height", "5");
+    plane.setAttribute("material", "opacity: 0.8;");
+    plane.setAttribute("onclick", "location.href='/static/history2.html'");
+    plane.setAttribute("src", "assets/" + currentData.imgAsset);
+    plane.setAttribute("scale", currentData.scale);
 
-    function createAsset(currentData) {
-      let marker = document.createElement("a-marker");
-      marker.setAttribute("type", "barcode");
-      marker.setAttribute("value", currentData.id)
-
-      let plane = document.createElement("a-plane")
-      plane.setAttribute("id", "canvas_" + currentData.id);
-      plane.setAttribute("rotation", "-90 0 0");
-      plane.setAttribute("position", "0 0 0");
-      plane.setAttribute("width", "5");
-      plane.setAttribute("height", "5");
-      plane.setAttribute("material", "opacity: 0.8;");
-      plane.setAttribute("onclick", "location.href='/static/history2.html'");
-      plane.setAttribute("src", "assets/" + currentData.imgAsset);
-      plane.setAttribute("scale", currentData.scale);
-
-      marker.appendChild(plane);
-      document.getElementById("scene").appendChild(marker);
-    }
+    marker.appendChild(plane);
+    document.getElementById("scene").appendChild(marker);
+  }
 
 
   //Camera feature check

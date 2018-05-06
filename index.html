@@ -44,7 +44,7 @@
           <p style="font-size:1em; font-weight:600">Note: Scan the AR code markers</p>
         </div>
       </p>
-      <div class="start btn custom-button">Start</div>
+      <div class="gotit btn custom-button">Start</div>
     </div>
     <div class="word-tip">
       <div class="title"></div>
@@ -59,6 +59,11 @@
   </main>
 
   <a-scene id="scene" embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;" hidden>
+    <a-box position='0 0.5 0' material='opacity: 0.5; side: double;color:red;'>
+      <a-marker type="barcode" value="5"></a-marker>
+      <a-marker type="barcode" value="20"></a-marker>
+    </a-box>
+
     <a-entity camera mouse-cursor></a-entity>
   </a-scene>
 

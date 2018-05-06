@@ -1,10 +1,10 @@
 $(document).ready(function() {
   var helpBtn = $(".help"),
-    startBtn = $(".start"),;
+    gotitBtn = $(".gotit");
 
-  for (var artwork in data) {
-    createAsset(data[artwork])
-  }
+  // for (var artwork in data) {
+  //   createAsset(data[artwork])
+  // }
 
   helpBtn.click(function(e) {
     e.preventDefault();
@@ -12,7 +12,7 @@ $(document).ready(function() {
     $("#video_demo")[0].style.display = "block";
   });
 
-  startBtn.click(function() {
+  gotitBtn.click(function() {
     gotitBtn.parent().css({
       display: "none"
     });

@@ -1,5 +1,6 @@
 $(document).ready(function() {
-  var helpBtn = $(".help");
+  var helpBtn = $(".help"),
+    startBtn = $(".start"),;
 
   for (var artwork in data) {
     createAsset(data[artwork])
@@ -9,6 +10,12 @@ $(document).ready(function() {
     e.preventDefault();
     console.log($("#video_demo")[0]);
     $("#video_demo")[0].style.display = "block";
+  });
+
+  startBtn.click(function() {
+    gotitBtn.parent().css({
+      display: "none"
+    });
   });
 
   function createAsset(currentData) {

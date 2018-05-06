@@ -55,4 +55,4 @@ import { data } from "./artList";
     $("#noMedia").append(template);
     $("#noMedia").css("display", "block");
   }
-})();
+});

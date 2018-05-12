@@ -64,6 +64,8 @@
     //		Init
     //////////////////////////////////////////////////////////////////////////////////
     // init renderer
+    var trackingBackend = 'aruco';
+
     var renderer	= new THREE.WebGLRenderer({
     	antialias: true,
     	alpha: true
@@ -83,7 +85,11 @@
     //		Initialize a basic camera
     //////////////////////////////////////////////////////////////////////////////////
     // Create a camera
-    var camera = new THREE.Camera();
+    if( trackingBackend === 'aruco' ){
+      var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+    }else if( trackingBackend === 'artoolkit' ){
+      var camera = new THREE.Camera();
+    }else console.assert(false)
     scene.add(camera);
     ////////////////////////////////////////////////////////////////////////////////
     //          handle arToolkitSource
@@ -110,9 +116,15 @@
     function onResize(){
     	arToolkitSource.onResize()
     	arToolkitSource.copySizeTo(renderer.domElement)
-    	if( arToolkitContext.arController !== null ){
-    		arToolkitSource.copySizeTo(arToolkitContext.arController.canvas)
-    	}
+      if( urlOptions.trackingBackend === 'aruco' ){
+  			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
+  			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+  			camera.updateProjectionMatrix();
+  		}else if( urlOptions.trackingBackend === 'artoolkit' ){
+  			if( arToolkitContext.arController !== null ){
+  				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+  			}
+  		}else console.assert(false)
     }
     ////////////////////////////////////////////////////////////////////////////////
     //          initialize arToolkitContext
@@ -129,7 +141,9 @@
     // initialize it
     arToolkitContext.init(function onCompleted(){
     	// copy projection matrix to camera
-    	camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+      if( trackingBackend === 'artoolkit' ){
+        camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+      }
     })
     // update artoolkit on every frame
     onRenderFcts.push(function(){

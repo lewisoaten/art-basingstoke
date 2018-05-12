@@ -121,7 +121,8 @@
     // create atToolkitContext
     var arToolkitContext = new THREEx.ArToolkitContext({
     	cameraParametersUrl: './assets/camera_para.dat',
-    	detectionMode: 'mono',
+    	detectionMode: 'mono_and_matrix',
+      matrixCodeType: '3x3',
     })
     // initialize it
     arToolkitContext.init(function onCompleted(){
@@ -143,8 +144,9 @@
 
     // init controls for camera
     var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-    	type : 'pattern',
-    	patternUrl : './assets/patt.hiro',
+    	type : 'barcode',
+    	// patternUrl : './assets/patt.hiro',
+      value: 5
     	// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
     	// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
     	changeMatrixMode: 'cameraTransformMatrix'

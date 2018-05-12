@@ -35,7 +35,7 @@ $(document).ready(function() {
     plane.setAttribute("scale", currentData.scale);
 
     marker.appendChild(plane);
-    document.getElementById("scene").appendChild(marker);
+    // document.getElementById("scene").appendChild(marker);
   }
 
 

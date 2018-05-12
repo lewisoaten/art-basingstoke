@@ -116,11 +116,11 @@
     function onResize(){
     	arToolkitSource.onResize()
     	arToolkitSource.copySizeTo(renderer.domElement)
-      if( urlOptions.trackingBackend === 'aruco' ){
+      if( trackingBackend === 'aruco' ){
   			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
   			camera.aspect = renderer.domElement.width / renderer.domElement.height;
   			camera.updateProjectionMatrix();
-  		}else if( urlOptions.trackingBackend === 'artoolkit' ){
+  		}else if( trackingBackend === 'artoolkit' ){
   			if( arToolkitContext.arController !== null ){
   				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
   			}

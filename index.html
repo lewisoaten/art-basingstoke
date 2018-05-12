@@ -123,6 +123,8 @@
     	cameraParametersUrl: './assets/camera_para.dat',
     	detectionMode: 'mono_and_matrix',
       matrixCodeType: '3x3',
+      trackingBackend: 'aruco',
+      maxDetectionRate: 60,
     })
     // initialize it
     arToolkitContext.init(function onCompleted(){

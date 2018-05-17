@@ -24,6 +24,8 @@
 
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/examples/vendor/three.js/build/three.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/build/ar.js"></script>
+  <script src="./scripts/MTLLoader.js"></script>
+  <script src="./scripts/OBJLoader.js"></script>
   <script src="./scripts/artList.js"></script>
   <script src="./scripts/main.js"></script>
 </head>
@@ -48,7 +50,7 @@
       <div class="gotit btn custom-button">Start</div>
     </div>
     <div class="word-tip">
-      <div class="title"></div>
+      <div class="title">...</div>
     </div>
 
     <div class="btns-wrap">
@@ -88,22 +90,27 @@
     if( trackingBackend === 'aruco' ){
       var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
     }else if( trackingBackend === 'artoolkit' ){
-      var camera = new THREE.Camera();
+      var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
     }else console.assert(false)
+
+    var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+    camera.add( pointLight );
     scene.add(camera);
     ////////////////////////////////////////////////////////////////////////////////
     //          handle arToolkitSource
     ////////////////////////////////////////////////////////////////////////////////
     var arToolkitSource = new THREEx.ArToolkitSource({
-    	// to read from the webcam
-    	// sourceType : 'webcam',
-
-    	// // to read from an image
-    	// sourceType : 'image',
-    	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
-    	// to read from a video
-    	sourceType : 'video',
+      // type of source - ['webcam', 'image', 'video']
+    	sourceType : 'webcam',
+    	// url of the source - valid if sourceType = image|video
     	sourceUrl : './assets/test_2_compress.mp4',
+
+    	// resolution of at which we initialize the source image
+    	// sourceWidth: 1280,
+    	// sourceHeight: 720,
+    	// resolution displayed for the source
+    	// displayWidth: 640,
+    	// displayHeight: 480,
     })
     arToolkitSource.init(function onReady(){
     	onResize()
@@ -113,6 +120,7 @@
     window.addEventListener('resize', function(){
     	onResize()
     })
+
     function onResize(){
     	arToolkitSource.onResize()
     	arToolkitSource.copySizeTo(renderer.domElement)
@@ -132,11 +140,27 @@
 
     // create atToolkitContext
     var arToolkitContext = new THREEx.ArToolkitContext({
-    	cameraParametersUrl: './assets/camera_para.dat',
-    	detectionMode: 'mono', // mono or mono_and_matrix
-      // matrixCodeType: '3x3',
+      // debug - true if one should display artoolkit debug canvas, false otherwise
+    	debug: false,
+      // artoolkit, aruco, best
       trackingBackend: trackingBackend,
-      maxDetectionRate: 60,
+    	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+    	detectionMode: 'color_and_matrix',
+    	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+    	matrixCodeType: '3x3',
+
+    	// url of the camera parameters
+    	cameraParametersUrl: './assets/camera_para.dat',
+
+    	// tune the maximum rate of pose detection in the source image
+    	maxDetectionRate: 60,
+    	// resolution of at which we detect pose in the source image
+    	// canvasWidth: 640,
+    	// canvasHeight: 480,
+
+    	// enable image smoothing or not for canvas copy - default to true
+    	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+    	imageSmoothingEnabled : true,
     })
     // initialize it
     arToolkitContext.init(function onCompleted(){
@@ -158,40 +182,76 @@
     //          Create a ArMarkerControls
     ////////////////////////////////////////////////////////////////////////////////
 
-    // init controls for camera
-    var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-    	type : 'pattern', // pattern or barcode
-    	patternUrl : './assets/patt.hiro',
-      // barcodeValue: 20,
-    	// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
-    	// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
-    	changeMatrixMode: 'cameraTransformMatrix'
+    var markerGroup = new THREE.Group
+    scene.add(markerGroup)
+
+    // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
+    var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
+      // size of the marker in meter
+      size : 1,
+      // type of marker - ['pattern', 'barcode', 'unknown' ]
+      type : 'barcode',
+      // url of the pattern - IIF type='pattern'
+      patternUrl : null,
+      // value of the barcode - IIF type='barcode'
+      barcodeValue : 20,
+      // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+      changeMatrixMode : 'modelViewMatrix',
     })
     // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
     scene.visible = false
     //////////////////////////////////////////////////////////////////////////////////
     //		add an object in the scene
     //////////////////////////////////////////////////////////////////////////////////
-    // add a torus knot
-    var geometry	= new THREE.CubeGeometry(1,1,1);
-    var material	= new THREE.MeshNormalMaterial({
-    	transparent : true,
-    	opacity: 0.5,
-    	side: THREE.DoubleSide
+
+    var markerScene = new THREE.Scene()
+    markerGroup.add(markerScene)
+
+    var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+    markerScene.add( ambientLight );
+
+
+    new THREE.MTLLoader()
+    .setPath( './assets/' )
+    .load( '3d-model.mtl', function ( materials ) {
+      materials.preload();
+      new THREE.OBJLoader()
+        .setMaterials( materials )
+        .setPath( './assets/' )
+        .load( '3d-model.obj', function ( object ) {
+          // object.position.y = - 95;
+          object.scale.x = 0.1
+          object.scale.y = 0.1
+          object.scale.z = 0.1
+          object.rotation.x = Math.PI/2
+          object.rotation.y = Math.PI
+          object.rotation.z = Math.PI/2
+          object.position.x -= 1.5
+          // object.position.y += 0.01
+
+          markerScene.add( object );
+        }, function ( xhr ) { }, function ( xhr ) { } );
+    } );
+
+    var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
+    var material = new THREE.MeshBasicMaterial({
+      map:THREE.ImageUtils.loadTexture('assets/1.jpg'),
+      side: THREE.DoubleSide,
+      opacity: 0.9,
     });
-    var mesh	= new THREE.Mesh( geometry, material );
-    mesh.position.y	= geometry.parameters.height/2
-    scene.add( mesh );
+    var plane = new THREE.Mesh( geometry, material );
+    plane.rotation.x = Math.PI/2
+    plane.rotation.z = Math.PI/2
+    markerScene.add( plane );
 
-    var geometry	= new THREE.TorusKnotGeometry(0.3,0.1,64,16);
-    var material	= new THREE.MeshNormalMaterial();
-    var mesh	= new THREE.Mesh( geometry, material );
-    mesh.position.y	= 0.5
-    scene.add( mesh );
-
-    onRenderFcts.push(function(delta){
-    	mesh.rotation.x += Math.PI*delta
+    var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
+    onRenderFcts.push(function(){
+      var intersects = raycaster.intersectObjects([plane]);
+      if (intersects && intersects.length>0) {
+        $(".title:first")[0].innerHTML="Awesome art by Liam!";
+      } else $(".title:first")[0].innerHTML="...";
     })
+
     //////////////////////////////////////////////////////////////////////////////////
     //		render the whole thing on the page
     //////////////////////////////////////////////////////////////////////////////////

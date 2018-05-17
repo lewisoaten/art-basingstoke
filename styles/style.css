@@ -19,6 +19,7 @@ body {
 
 .btns-wrap,
 .word-tip {
+  text-align: center;
   display: block;
   position: fixed;
   left: 50%;

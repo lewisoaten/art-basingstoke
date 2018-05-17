@@ -64,7 +64,7 @@
     //		Init
     //////////////////////////////////////////////////////////////////////////////////
     // init renderer
-    var trackingBackend = 'aruco';
+    var trackingBackend = 'artoolkit'; // aruco or artoolkit
 
     var renderer	= new THREE.WebGLRenderer({
     	antialias: true,
@@ -135,7 +135,7 @@
     	cameraParametersUrl: './assets/camera_para.dat',
     	detectionMode: 'mono', // mono or mono_and_matrix
       // matrixCodeType: '3x3',
-      trackingBackend: 'artoolkit', // aruco or artoolkit
+      trackingBackend: trackingBackend,
       maxDetectionRate: 60,
     })
     // initialize it

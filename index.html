@@ -96,14 +96,14 @@
     ////////////////////////////////////////////////////////////////////////////////
     var arToolkitSource = new THREEx.ArToolkitSource({
     	// to read from the webcam
-    	sourceType : 'webcam',
+    	// sourceType : 'webcam',
 
     	// // to read from an image
     	// sourceType : 'image',
     	// sourceUrl : THREEx.ArToolkitContext.baseURL + '../data/images/img.jpg',
     	// to read from a video
-    	// sourceType : 'video',
-    	// sourceUrl : './assets/test_2_compress.mp4',
+    	sourceType : 'video',
+    	sourceUrl : './assets/test_2_compress.mp4',
     })
     arToolkitSource.init(function onReady(){
     	onResize()

@@ -133,9 +133,9 @@
     // create atToolkitContext
     var arToolkitContext = new THREEx.ArToolkitContext({
     	cameraParametersUrl: './assets/camera_para.dat',
-    	detectionMode: 'mono_and_matrix',
-      matrixCodeType: '3x3',
-      trackingBackend: 'aruco',
+    	detectionMode: 'mono', // mono or mono_and_matrix
+      // matrixCodeType: '3x3',
+      trackingBackend: 'artoolkit', // aruco or artoolkit
       maxDetectionRate: 60,
     })
     // initialize it
@@ -160,9 +160,9 @@
 
     // init controls for camera
     var markerControls = new THREEx.ArMarkerControls(arToolkitContext, camera, {
-    	type : 'barcode',
-    	// patternUrl : './assets/patt.hiro',
-      barcodeValue: 20,
+    	// type : 'barcode',
+    	patternUrl : './assets/patt.hiro',
+      // barcodeValue: 20,
     	// patternUrl : THREEx.ArToolkitContext.baseURL + '../data/data/patt.kanji',
     	// as we controls the camera, set changeMatrixMode: 'cameraTransformMatrix'
     	changeMatrixMode: 'cameraTransformMatrix'

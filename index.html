@@ -122,17 +122,13 @@
     })
 
     function onResize(){
-    	arToolkitSource.onResize()
-    	arToolkitSource.copySizeTo(renderer.domElement)
-      if( trackingBackend === 'aruco' ){
-  			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
-  			camera.aspect = renderer.domElement.width / renderer.domElement.height;
-  			camera.updateProjectionMatrix();
-  		}else if( trackingBackend === 'artoolkit' ){
-  			if( arToolkitContext.arController !== null ){
-  				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
-  			}
-  		}else console.assert(false)
+      // Possible fix for portrait mode
+      arToolkitSource.onResizeElement()
+      arToolkitSource.copyElementSizeTo(renderer.domElement)
+      setTimeout(function(){
+          arToolkitSource.onResizeElement()
+          arToolkitSource.copyElementSizeTo(renderer.domElement)
+      }, 500);
     }
     ////////////////////////////////////////////////////////////////////////////////
     //          initialize arToolkitContext
@@ -155,8 +151,8 @@
     	// tune the maximum rate of pose detection in the source image
     	maxDetectionRate: 60,
     	// resolution of at which we detect pose in the source image
-    	canvasWidth: 1280,
-    	canvasHeight: 1024,
+    	canvasWidth: 1000,
+    	canvasHeight: 1000,
 
     	// enable image smoothing or not for canvas copy - default to true
     	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled

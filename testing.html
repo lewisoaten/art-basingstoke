@@ -186,22 +186,32 @@
 
     var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
 
-    var worldObjects = {};
+    var worldObjects = [];
+    var objectTitles = {};
 
     for (var artwork in data) {
       var markerGroup = createAsset(data[artwork]);
-      scene.add(markerGroup)
+      scene.add(markerGroup);
+
+      data[artwork].objects = [];
 
       for (var child in markerGroup.children[0].children) {
-        worldObjects[markerGroup.children[0].children[child].uuid] = data[artwork].title
+        var object = markerGroup.children[0].children[child];
+        data[artwork].objects.push(object.uuid);
+        objectTitles[object.uuid] = data[artwork].title
+        worldObjects.push(object);
       }
     }
 
     onRenderFcts.push(function(){
-      var intersects = raycaster.intersectObjects(Object.keys(worldObjects));
-      if (intersects && intersects.length>0) {
-        $(".title:first")[0].innerHTML=worldObjects[intersects.uuid];
-      } else $(".title:first")[0].innerHTML="...";
+      var intersects = raycaster.intersectObjects(worldObjects);
+      if (intersects) {
+        for (var object in intersects) {
+          $(".title:first")[0].innerHTML=objectTitles[intersects[object].uuid];
+          $(".title:first")[0].visible = true;
+          break;
+        }
+      } else $(".title:first")[0].visible=false;
     })
 
     function createAsset(currentData) {

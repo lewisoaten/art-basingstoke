@@ -208,10 +208,10 @@
       if (intersects && intersects.length>0) {
         for (var object in intersects) {
           $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
-          $(".title:first")[0].visible = true;
+          $(".title:first")[0].show();
           break;
         }
-      } else $(".title:first")[0].visible=false;
+      } else $(".title:first")[0].hide();
     })
 
     function createAsset(currentData) {

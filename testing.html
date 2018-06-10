@@ -193,14 +193,14 @@
       scene.add(markerGroup)
 
       for (var child in markerGroup.children[0].children) {
-        worldObjects[markerGroup.children[0].children[child]] = data[artwork].title
+        worldObjects[markerGroup.children[0].children[child].uuid] = data[artwork].title
       }
     }
 
     onRenderFcts.push(function(){
       var intersects = raycaster.intersectObjects(Object.keys(worldObjects));
       if (intersects && intersects.length>0) {
-        $(".title:first")[0].innerHTML=worldObjects[intersects];
+        $(".title:first")[0].innerHTML=worldObjects[intersects.uuid];
       } else $(".title:first")[0].innerHTML="...";
     })
 

@@ -1,8 +1,17 @@
 {
-  "name": "ARt Basingstoke",
-  "short_name": "ARt Basingstoke",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#FF9800",
-  "theme_color": "#FF9800"
+  "dir" : "ltr",
+  "lang" : "en",
+  "name" : "ARt Basingstoke - Art in unusual spaces",
+  "scope" : "/",
+  "display" : "fullscreen",
+  "start_url" : "https://www.artbasingstoke.org.uk/",
+  "short_name" : "ARt Basingstoke",
+  "theme_color" : "transparent",
+  "description" : "ARt Basingstoke exploring art in unusual spaces with Augmented Reality.",
+  "orientation" : "any",
+  "background_color" : "transparent",
+  "related_applications" : "",
+  "prefer_related_applications" : "false",
+  "icons" : [
+  ]
 }

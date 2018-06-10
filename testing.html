@@ -218,15 +218,21 @@
 
     onRenderFcts.push(function(){
       var intersects = raycaster.intersectObjects(worldObjects);
+      var found = false
       if (intersects && intersects.length>0) {
         for (var object in intersects) {
           if (intersects[object].distance>0) {
             $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
             $(".word-tip").show();
+            found = true
             break;
           }
         }
-      } else $(".word-tip").hide();
+      }
+
+      if (!found) {
+        $(".word-tip").hide();
+      }
     })
 
     function createAsset(currentData) {

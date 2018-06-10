@@ -73,320 +73,329 @@
     ga('set', 'appName', 'ARt Basingstoke');
     ga('send', 'pageview');
 
-    $(document).ready(function() {
-      var helpBtn = $(".help"),
-        gotitBtn = $(".gotit");
+    function handleRouteError(err) {
+      Raven.captureException(err);
+      Raven.showReportDialog();
+    };
 
-      helpBtn.click(function(e) {
-        e.preventDefault();
-        console.log($("#video_demo")[0]);
-        $("#video_demo")[0].style.display = "block";
-      });
+    try {
+      $(document).ready(function() {
+        var helpBtn = $(".help"),
+          gotitBtn = $(".gotit");
 
-      gotitBtn.click(function() {
-        ga('send', {
-          hitType: 'event',
-          eventCategory: 'popups',
-          eventAction: 'start'
+        helpBtn.click(function(e) {
+          e.preventDefault();
+          console.log($("#video_demo")[0]);
+          $("#video_demo")[0].style.display = "block";
         });
-        gotitBtn.parent().css({
-          display: "none"
+
+        gotitBtn.click(function() {
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'popups',
+            eventAction: 'start'
+          });
+          gotitBtn.parent().css({
+            display: "none"
+          });
         });
-      });
 
 
-      //Camera feature check
-      function hasGetUserMedia() {
-        return !!(
-          navigator.getUserMedia ||
-          navigator.webkitGetUserMedia ||
-          navigator.mozGetUserMedia ||
-          navigator.msGetUserMedia
-        );
-      }
-
-      if (hasGetUserMedia()) {
-        // Good to go!
-        $("#splashScreen").css("display", "block");
-      } else {
-        let template = "<p>This feature is not supported in your browser.</p>";
-        $("#noMedia").append(template);
-        $("#noMedia").css("display", "block");
-      }
-    });
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //		Init
-    //////////////////////////////////////////////////////////////////////////////////
-    // init renderer
-    var trackingBackend = 'artoolkit'; // aruco or artoolkit
-
-    var renderer	= new THREE.WebGLRenderer({
-    	antialias: true,
-    	alpha: true,
-      logarithmicDepthBuffer: true
-    });
-    renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-    renderer.setSize( 1024, 768 );
-    renderer.domElement.style.position = 'absolute'
-    renderer.domElement.style.top = '0px'
-    renderer.domElement.style.left = '0px'
-    renderer.domElement.style.zIndex = '-1'
-    document.body.appendChild( renderer.domElement );
-    // array of functions for the rendering loop
-    var onRenderFcts= [];
-    // init scene and camera
-    var scene	= new THREE.Scene();
-
-    var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-    scene.add( ambientLight );
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //		Initialize a basic camera
-    //////////////////////////////////////////////////////////////////////////////////
-    // Create a camera
-    if( trackingBackend === 'aruco' ){
-      var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-    }else if( trackingBackend === 'artoolkit' ){
-      var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
-    }else console.assert(false)
-
-    var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
-    camera.add( pointLight );
-    scene.add(camera);
-    ////////////////////////////////////////////////////////////////////////////////
-    //          handle arToolkitSource
-    ////////////////////////////////////////////////////////////////////////////////
-    var arToolkitSource = new THREEx.ArToolkitSource({
-      // type of source - ['webcam', 'image', 'video']
-    	sourceType : 'webcam',
-    	// url of the source - valid if sourceType = image|video
-    	sourceUrl : './assets/test_2_compress.mp4',
-
-    	// resolution of at which we initialize the source image
-    	// sourceWidth: 1280,
-    	// sourceHeight: 720,
-    	// resolution displayed for the source
-    	// displayWidth: 640,
-    	// displayHeight: 480,
-    })
-    arToolkitSource.init(function onReady(){
-    	onResize()
-    })
-
-    // handle resize
-    window.addEventListener('resize', function(){
-    	onResize()
-    })
-
-    function onResize(){
-      // Possible fix for portrait mode
-      arToolkitSource.onResizeElement()
-      arToolkitSource.copyElementSizeTo(renderer.domElement)
-      setTimeout(function(){
-          arToolkitSource.onResizeElement()
-          arToolkitSource.copyElementSizeTo(renderer.domElement)
-      }, 500);
-      // arToolkitSource.onResize()
-      // arToolkitSource.copySizeTo(renderer.domElement)
-      // if( trackingBackend === 'aruco' ){
-  		// 	arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
-  		// 	camera.aspect = renderer.domElement.width / renderer.domElement.height;
-  		// 	camera.updateProjectionMatrix();
-  		// }else if( trackingBackend === 'artoolkit' ){
-  		// 	if( arToolkitContext.arController !== null ){
-  		// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
-  		// 	}
-  		// }else console.assert(false)
-    }
-    ////////////////////////////////////////////////////////////////////////////////
-    //          initialize arToolkitContext
-    ////////////////////////////////////////////////////////////////////////////////
-
-    // create atToolkitContext
-    var arToolkitContext = new THREEx.ArToolkitContext({
-      // debug - true if one should display artoolkit debug canvas, false otherwise
-    	debug: false,
-      // artoolkit, aruco, best
-      trackingBackend: trackingBackend,
-    	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-    	detectionMode: 'mono_and_matrix',
-    	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
-    	matrixCodeType: '3x3',
-
-    	// url of the camera parameters
-    	cameraParametersUrl: './assets/camera_para.dat',
-
-    	// tune the maximum rate of pose detection in the source image
-    	maxDetectionRate: 60,
-    	// resolution of at which we detect pose in the source image
-    	canvasWidth: 1024,
-    	canvasHeight: 768,
-
-    	// enable image smoothing or not for canvas copy - default to true
-    	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
-    	imageSmoothingEnabled : true,
-    })
-    // initialize it
-    arToolkitContext.init(function onCompleted(){
-    	// copy projection matrix to camera
-      if( trackingBackend === 'artoolkit' ){
-        camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
-      }
-    })
-    // update artoolkit on every frame
-    onRenderFcts.push(function(){
-    	if( arToolkitSource.ready === false )	return
-    	arToolkitContext.update( arToolkitSource.domElement )
-
-    	// update scene.visible if the marker is seen
-    	scene.visible = camera.visible
-    })
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //		BEGIN ARTWORK SECTION
-    //////////////////////////////////////////////////////////////////////////////////
-    // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
-    scene.visible = false
-
-    var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
-
-    var worldObjects = [];
-    var objectTitles = {};
-
-    for (var artwork in data) {
-      var markerGroup = createAsset(data[artwork]);
-      scene.add(markerGroup);
-
-      data[artwork].objects = [];
-
-      for (var child in markerGroup.children[0].children) {
-        var object = markerGroup.children[0].children[child];
-        data[artwork].objects.push(object.uuid);
-        objectTitles[object.uuid] = data[artwork].title
-        worldObjects.push(object);
-      }
-    }
-
-    onRenderFcts.push(function(){
-      var intersects = raycaster.intersectObjects(worldObjects);
-      var found = false
-      if (intersects && intersects.length>0) {
-        for (var object in intersects) {
-          if (intersects[object].distance>0) {
-            ga('send', 'screenview', {
-              'appName': 'ARt Basingstoke',
-              'screenName': 'Art: ' + objectTitles[intersects[object].object.uuid]
-            });
-            $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
-            $(".word-tip").show();
-            found = true
-            break;
-          }
+        //Camera feature check
+        function hasGetUserMedia() {
+          return !!(
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia
+          );
         }
-      }
 
-      if (!found) {
-        $(".word-tip").hide();
-      }
-    })
+        if (hasGetUserMedia()) {
+          // Good to go!
+          $("#splashScreen").css("display", "block");
+        } else {
+          let template = "<p>This feature is not supported in your browser.</p>";
+          $("#noMedia").append(template);
+          $("#noMedia").css("display", "block");
+        }
+      });
 
-    function createAsset(currentData) {
+      //////////////////////////////////////////////////////////////////////////////////
+      //		Init
+      //////////////////////////////////////////////////////////////////////////////////
+      // init renderer
+      var trackingBackend = 'artoolkit'; // aruco or artoolkit
+
+      var renderer	= new THREE.WebGLRenderer({
+      	antialias: true,
+      	alpha: true,
+        logarithmicDepthBuffer: true
+      });
+      renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+      renderer.setSize( 1024, 768 );
+      renderer.domElement.style.position = 'absolute'
+      renderer.domElement.style.top = '0px'
+      renderer.domElement.style.left = '0px'
+      renderer.domElement.style.zIndex = '-1'
+      document.body.appendChild( renderer.domElement );
+      // array of functions for the rendering loop
+      var onRenderFcts= [];
+      // init scene and camera
+      var scene	= new THREE.Scene();
+
+      var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+      scene.add( ambientLight );
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		Initialize a basic camera
+      //////////////////////////////////////////////////////////////////////////////////
+      // Create a camera
+      if( trackingBackend === 'aruco' ){
+        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+      }else if( trackingBackend === 'artoolkit' ){
+        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+      }else console.assert(false)
+
+      var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+      camera.add( pointLight );
+      scene.add(camera);
       ////////////////////////////////////////////////////////////////////////////////
-      //          Create a ArMarkerControls
+      //          handle arToolkitSource
+      ////////////////////////////////////////////////////////////////////////////////
+      var arToolkitSource = new THREEx.ArToolkitSource({
+        // type of source - ['webcam', 'image', 'video']
+      	sourceType : 'webcam',
+      	// url of the source - valid if sourceType = image|video
+      	sourceUrl : './assets/test_2_compress.mp4',
+
+      	// resolution of at which we initialize the source image
+      	// sourceWidth: 1280,
+      	// sourceHeight: 720,
+      	// resolution displayed for the source
+      	// displayWidth: 640,
+      	// displayHeight: 480,
+      })
+      arToolkitSource.init(function onReady(){
+      	onResize()
+      })
+
+      // handle resize
+      window.addEventListener('resize', function(){
+      	onResize()
+      })
+
+      function onResize(){
+        // Possible fix for portrait mode
+        arToolkitSource.onResizeElement()
+        arToolkitSource.copyElementSizeTo(renderer.domElement)
+        setTimeout(function(){
+            arToolkitSource.onResizeElement()
+            arToolkitSource.copyElementSizeTo(renderer.domElement)
+        }, 500);
+        // arToolkitSource.onResize()
+        // arToolkitSource.copySizeTo(renderer.domElement)
+        // if( trackingBackend === 'aruco' ){
+    		// 	arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
+    		// 	camera.aspect = renderer.domElement.width / renderer.domElement.height;
+    		// 	camera.updateProjectionMatrix();
+    		// }else if( trackingBackend === 'artoolkit' ){
+    		// 	if( arToolkitContext.arController !== null ){
+    		// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+    		// 	}
+    		// }else console.assert(false)
+      }
+      ////////////////////////////////////////////////////////////////////////////////
+      //          initialize arToolkitContext
       ////////////////////////////////////////////////////////////////////////////////
 
-      var markerGroup = new THREE.Group
+      // create atToolkitContext
+      var arToolkitContext = new THREEx.ArToolkitContext({
+        // debug - true if one should display artoolkit debug canvas, false otherwise
+      	debug: false,
+        // artoolkit, aruco, best
+        trackingBackend: trackingBackend,
+      	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+      	detectionMode: 'mono_and_matrix',
+      	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+      	matrixCodeType: '3x3',
 
-      // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
-      var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
-        // size of the marker in meter
-        size : 1,
-        // type of marker - ['pattern', 'barcode', 'unknown' ]
-        type : 'barcode',
-        // url of the pattern - IIF type='pattern'
-        patternUrl : null,
-        // value of the barcode - IIF type='barcode'
-        barcodeValue : currentData.id,
-        // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-        changeMatrixMode : 'modelViewMatrix',
+      	// url of the camera parameters
+      	cameraParametersUrl: './assets/camera_para.dat',
+
+      	// tune the maximum rate of pose detection in the source image
+      	maxDetectionRate: 60,
+      	// resolution of at which we detect pose in the source image
+      	canvasWidth: 1024,
+      	canvasHeight: 768,
+
+      	// enable image smoothing or not for canvas copy - default to true
+      	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+      	imageSmoothingEnabled : true,
+      })
+      // initialize it
+      arToolkitContext.init(function onCompleted(){
+      	// copy projection matrix to camera
+        if( trackingBackend === 'artoolkit' ){
+          camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+        }
+      })
+      // update artoolkit on every frame
+      onRenderFcts.push(function(){
+      	if( arToolkitSource.ready === false )	return
+      	arToolkitContext.update( arToolkitSource.domElement )
+
+      	// update scene.visible if the marker is seen
+      	scene.visible = camera.visible
       })
 
       //////////////////////////////////////////////////////////////////////////////////
-      //		add an object in the scene
+      //		BEGIN ARTWORK SECTION
       //////////////////////////////////////////////////////////////////////////////////
+      // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+      scene.visible = false
 
-      var markerScene = new THREE.Scene()
-      markerGroup.add(markerScene)
+      var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
 
-      var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
-      var material = new THREE.MeshBasicMaterial({
-        map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
-        side: THREE.DoubleSide,
-        opacity: 0.9,
-        depthTest: false
-      });
+      var worldObjects = [];
+      var objectTitles = {};
 
-      var plane = new THREE.Mesh( geometry, material );
-      plane.rotation.x = Math.PI/2
-      plane.rotation.z = Math.PI/2
-      plane.position.y = 0
-      plane.renderOrder = 999;
-      plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
-      markerScene.add( plane );
+      for (var artwork in data) {
+        var markerGroup = createAsset(data[artwork]);
+        scene.add(markerGroup);
 
-      if (currentData.isObj) {
-        new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
-          materials.preload();
-          new THREE.OBJLoader().setMaterials(materials).setPath('./assets/').load(currentData.objAsset, function (object) {
-            // object.position.y = - 95;
-            object.scale.x = 0.1
-            object.scale.y = 0.1
-            object.scale.z = 0.1
-            object.rotation.x = Math.PI/2
-            object.rotation.y = Math.PI
-            object.rotation.z = Math.PI/2
-            object.position.x -= 1.5
-            // object.position.y += 0.01
+        data[artwork].objects = [];
 
-            for (var child in object.children) {
-              object.children[child].material.clippingPlanes = [ geometry ];
-              object.children[child].material.clipShadows = true;
-            }
-
-            markerScene.add( object );
-          }, function ( xhr ) { }, function ( xhr ) { } );
-        });
+        for (var child in markerGroup.children[0].children) {
+          var object = markerGroup.children[0].children[child];
+          data[artwork].objects.push(object.uuid);
+          objectTitles[object.uuid] = data[artwork].title
+          worldObjects.push(object);
+        }
       }
 
-      return markerGroup;
+      onRenderFcts.push(function(){
+        var intersects = raycaster.intersectObjects(worldObjects);
+        var found = false
+        if (intersects && intersects.length>0) {
+          for (var object in intersects) {
+            if (intersects[object].distance>0) {
+              ga('send', 'screenview', {
+                'appName': 'ARt Basingstoke',
+                'screenName': 'Art: ' + objectTitles[intersects[object].object.uuid]
+              });
+              $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
+              $(".word-tip").show();
+              found = true
+              break;
+            }
+          }
+        }
+
+        if (!found) {
+          $(".word-tip").hide();
+        }
+      })
+
+      function createAsset(currentData) {
+        ////////////////////////////////////////////////////////////////////////////////
+        //          Create a ArMarkerControls
+        ////////////////////////////////////////////////////////////////////////////////
+
+        var markerGroup = new THREE.Group
+
+        // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
+        var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
+          // size of the marker in meter
+          size : 1,
+          // type of marker - ['pattern', 'barcode', 'unknown' ]
+          type : 'barcode',
+          // url of the pattern - IIF type='pattern'
+          patternUrl : null,
+          // value of the barcode - IIF type='barcode'
+          barcodeValue : currentData.id,
+          // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+          changeMatrixMode : 'modelViewMatrix',
+        })
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //		add an object in the scene
+        //////////////////////////////////////////////////////////////////////////////////
+
+        var markerScene = new THREE.Scene()
+        markerGroup.add(markerScene)
+
+        var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
+        var material = new THREE.MeshBasicMaterial({
+          map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
+          side: THREE.DoubleSide,
+          opacity: 0.9,
+          depthTest: false
+        });
+
+        var plane = new THREE.Mesh( geometry, material );
+        plane.rotation.x = Math.PI/2
+        plane.rotation.z = Math.PI/2
+        plane.position.y = 0
+        plane.renderOrder = 999;
+        plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
+        markerScene.add( plane );
+
+        if (currentData.isObj) {
+          new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
+            materials.preload();
+            new THREE.OBJLoader().setMaterials(materials).setPath('./assets/').load(currentData.objAsset, function (object) {
+              // object.position.y = - 95;
+              object.scale.x = 0.1
+              object.scale.y = 0.1
+              object.scale.z = 0.1
+              object.rotation.x = Math.PI/2
+              object.rotation.y = Math.PI
+              object.rotation.z = Math.PI/2
+              object.position.x -= 1.5
+              // object.position.y += 0.01
+
+              for (var child in object.children) {
+                object.children[child].material.clippingPlanes = [ geometry ];
+                object.children[child].material.clipShadows = true;
+              }
+
+              markerScene.add( object );
+            }, function ( xhr ) { }, function ( xhr ) { } );
+          });
+        }
+
+        return markerGroup;
+      }
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		END ARTWORK SECTION
+      //////////////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		render the whole thing on the page
+      //////////////////////////////////////////////////////////////////////////////////
+      // render the scene
+      onRenderFcts.push(function(){
+      	renderer.render( scene, camera );
+      })
+      // run the rendering loop
+      var lastTimeMsec= null
+      requestAnimationFrame(function animate(nowMsec){
+      	// keep looping
+      	requestAnimationFrame( animate );
+      	// measure time
+      	lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+      	var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+      	lastTimeMsec	= nowMsec
+      	// call each update function
+      	onRenderFcts.forEach(function(onRenderFct){
+      		onRenderFct(deltaMsec/1000, nowMsec/1000)
+      	})
+      })
+    } catch (err) {
+      handleRouteError(err);
     }
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //		END ARTWORK SECTION
-    //////////////////////////////////////////////////////////////////////////////////
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //		render the whole thing on the page
-    //////////////////////////////////////////////////////////////////////////////////
-    // render the scene
-    onRenderFcts.push(function(){
-    	renderer.render( scene, camera );
-    })
-    // run the rendering loop
-    var lastTimeMsec= null
-    requestAnimationFrame(function animate(nowMsec){
-    	// keep looping
-    	requestAnimationFrame( animate );
-    	// measure time
-    	lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-    	var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-    	lastTimeMsec	= nowMsec
-    	// call each update function
-    	onRenderFcts.forEach(function(onRenderFct){
-    		onRenderFct(deltaMsec/1000, nowMsec/1000)
-    	})
-    })
   </script>
 
   <script async>

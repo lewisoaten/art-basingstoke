@@ -23,7 +23,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/examples/vendor/three.js/build/three.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.min.js"></script>
   <script src="./scripts/MTLLoader.js"></script>
   <script src="./scripts/OBJLoader.js"></script>
   <script src="./scripts/artList.js"></script>
@@ -126,24 +126,24 @@
     })
 
     function onResize(){
-      // Possible fix for portrait mode
-      arToolkitSource.onResizeElement()
-      arToolkitSource.copyElementSizeTo(renderer.domElement)
-      setTimeout(function(){
-          arToolkitSource.onResizeElement()
-          arToolkitSource.copyElementSizeTo(renderer.domElement)
-      }, 500);
-      // arToolkitSource.onResize()
-      // arToolkitSource.copySizeTo(renderer.domElement)
-      // if( trackingBackend === 'aruco' ){
-  		// 	arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
-  		// 	camera.aspect = renderer.domElement.width / renderer.domElement.height;
-  		// 	camera.updateProjectionMatrix();
-  		// }else if( trackingBackend === 'artoolkit' ){
-  		// 	if( arToolkitContext.arController !== null ){
-  		// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
-  		// 	}
-  		// }else console.assert(false)
+      // // Possible fix for portrait mode
+      // arToolkitSource.onResizeElement()
+      // arToolkitSource.copyElementSizeTo(renderer.domElement)
+      // setTimeout(function(){
+      //     arToolkitSource.onResizeElement()
+      //     arToolkitSource.copyElementSizeTo(renderer.domElement)
+      // }, 500);
+      arToolkitSource.onResize()
+      arToolkitSource.copySizeTo(renderer.domElement)
+      if( trackingBackend === 'aruco' ){
+  			arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
+  			camera.aspect = renderer.domElement.width / renderer.domElement.height;
+  			camera.updateProjectionMatrix();
+  		}else if( trackingBackend === 'artoolkit' ){
+  			if( arToolkitContext.arController !== null ){
+  				arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+  			}
+  		}else console.assert(false)
     }
     ////////////////////////////////////////////////////////////////////////////////
     //          initialize arToolkitContext
@@ -332,13 +332,13 @@
   </script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-118805418-1');
+    gtag('config', 'UA-118805418-2');
   </script>
   <noscript>
     Javascript is required to run this app!

@@ -18,12 +18,14 @@
     ARt Basingstoke - Art in unusual spaces with Augmented Reality
   </title>
 
+  <link rel="manifest" href="/manifest.json">
+
   <link rel="stylesheet" type="text/css" href="./styles/style.css" />
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/examples/vendor/three.js/build/three.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/build/ar.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/examples/vendor/three.js/build/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.min.js"></script>
   <script src="./scripts/MTLLoader.js"></script>
   <script src="./scripts/OBJLoader.js"></script>
   <script src="./scripts/artList.js"></script>
@@ -70,7 +72,8 @@
 
     var renderer	= new THREE.WebGLRenderer({
     	antialias: true,
-    	alpha: true
+    	alpha: true,
+      logarithmicDepthBuffer: true
     });
     renderer.setClearColor(new THREE.Color('lightgrey'), 0)
     renderer.setSize( 640, 480 );
@@ -82,6 +85,9 @@
     var onRenderFcts= [];
     // init scene and camera
     var scene	= new THREE.Scene();
+
+    var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+    scene.add( ambientLight );
 
     //////////////////////////////////////////////////////////////////////////////////
     //		Initialize a basic camera
@@ -129,6 +135,17 @@
           arToolkitSource.onResizeElement()
           arToolkitSource.copyElementSizeTo(renderer.domElement)
       }, 500);
+      // arToolkitSource.onResize()
+      // arToolkitSource.copySizeTo(renderer.domElement)
+      // if( trackingBackend === 'aruco' ){
+  		// 	arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
+  		// 	camera.aspect = renderer.domElement.width / renderer.domElement.height;
+  		// 	camera.updateProjectionMatrix();
+  		// }else if( trackingBackend === 'artoolkit' ){
+  		// 	if( arToolkitContext.arController !== null ){
+  		// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+  		// 	}
+  		// }else console.assert(false)
     }
     ////////////////////////////////////////////////////////////////////////////////
     //          initialize arToolkitContext
@@ -141,7 +158,7 @@
       // artoolkit, aruco, best
       trackingBackend: trackingBackend,
     	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
-    	detectionMode: 'color_and_matrix',
+    	detectionMode: 'mono_and_matrix',
     	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
     	matrixCodeType: '3x3',
 
@@ -151,8 +168,8 @@
     	// tune the maximum rate of pose detection in the source image
     	maxDetectionRate: 60,
     	// resolution of at which we detect pose in the source image
-    	canvasWidth: 1000,
-    	canvasHeight: 1000,
+    	// canvasWidth: 320,
+    	// canvasHeight: 240,
 
     	// enable image smoothing or not for canvas copy - default to true
     	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
@@ -174,80 +191,124 @@
     	scene.visible = camera.visible
     })
 
-    ////////////////////////////////////////////////////////////////////////////////
-    //          Create a ArMarkerControls
-    ////////////////////////////////////////////////////////////////////////////////
-
-    var markerGroup = new THREE.Group
-    scene.add(markerGroup)
-
-    // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
-    var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
-      // size of the marker in meter
-      size : 1,
-      // type of marker - ['pattern', 'barcode', 'unknown' ]
-      type : 'barcode',
-      // url of the pattern - IIF type='pattern'
-      patternUrl : null,
-      // value of the barcode - IIF type='barcode'
-      barcodeValue : 20,
-      // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
-      changeMatrixMode : 'modelViewMatrix',
-    })
+    //////////////////////////////////////////////////////////////////////////////////
+    //		BEGIN ARTWORK SECTION
+    //////////////////////////////////////////////////////////////////////////////////
     // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
     scene.visible = false
-    //////////////////////////////////////////////////////////////////////////////////
-    //		add an object in the scene
-    //////////////////////////////////////////////////////////////////////////////////
-
-    var markerScene = new THREE.Scene()
-    markerGroup.add(markerScene)
-
-    var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-    markerScene.add( ambientLight );
-
-
-    new THREE.MTLLoader()
-    .setPath( './assets/' )
-    .load( '3d-model.mtl', function ( materials ) {
-      materials.preload();
-      new THREE.OBJLoader()
-        .setMaterials( materials )
-        .setPath( './assets/' )
-        .load( '3d-model.obj', function ( object ) {
-          // object.position.y = - 95;
-          object.scale.x = 0.1
-          object.scale.y = 0.1
-          object.scale.z = 0.1
-          object.rotation.x = Math.PI/2
-          object.rotation.y = Math.PI
-          object.rotation.z = Math.PI/2
-          object.position.x -= 1.5
-          // object.position.y += 0.01
-
-          markerScene.add( object );
-        }, function ( xhr ) { }, function ( xhr ) { } );
-    } );
-
-    var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
-    var material = new THREE.MeshBasicMaterial({
-      map:THREE.ImageUtils.loadTexture('assets/1.jpg'),
-      side: THREE.DoubleSide,
-      opacity: 0.9,
-    });
-    var plane = new THREE.Mesh( geometry, material );
-    plane.rotation.x = Math.PI/2
-    plane.rotation.z = Math.PI/2
-    plane.position.y += 0.2
-    markerScene.add( plane );
 
     var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
+
+    var worldObjects = [];
+    var objectTitles = {};
+
+    for (var artwork in data) {
+      var markerGroup = createAsset(data[artwork]);
+      scene.add(markerGroup);
+
+      data[artwork].objects = [];
+
+      for (var child in markerGroup.children[0].children) {
+        var object = markerGroup.children[0].children[child];
+        data[artwork].objects.push(object.uuid);
+        objectTitles[object.uuid] = data[artwork].title
+        worldObjects.push(object);
+      }
+    }
+
     onRenderFcts.push(function(){
-      var intersects = raycaster.intersectObjects([plane]);
+      var intersects = raycaster.intersectObjects(worldObjects);
+      var found = false
       if (intersects && intersects.length>0) {
-        $(".title:first")[0].innerHTML="Awesome art by Liam!";
-      } else $(".title:first")[0].innerHTML="...";
+        for (var object in intersects) {
+          if (intersects[object].distance>0) {
+            $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
+            $(".word-tip").show();
+            found = true
+            break;
+          }
+        }
+      }
+
+      if (!found) {
+        $(".word-tip").hide();
+      }
     })
+
+    function createAsset(currentData) {
+      ////////////////////////////////////////////////////////////////////////////////
+      //          Create a ArMarkerControls
+      ////////////////////////////////////////////////////////////////////////////////
+
+      var markerGroup = new THREE.Group
+
+      // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
+      var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
+        // size of the marker in meter
+        size : 1,
+        // type of marker - ['pattern', 'barcode', 'unknown' ]
+        type : 'barcode',
+        // url of the pattern - IIF type='pattern'
+        patternUrl : null,
+        // value of the barcode - IIF type='barcode'
+        barcodeValue : currentData.id,
+        // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+        changeMatrixMode : 'modelViewMatrix',
+      })
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		add an object in the scene
+      //////////////////////////////////////////////////////////////////////////////////
+
+      var markerScene = new THREE.Scene()
+      markerGroup.add(markerScene)
+
+      var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
+      var material = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
+        side: THREE.DoubleSide,
+        opacity: 0.9,
+        depthTest: false
+      });
+
+      var plane = new THREE.Mesh( geometry, material );
+      plane.rotation.x = Math.PI/2
+      plane.rotation.z = Math.PI/2
+      plane.position.y = 0
+      plane.renderOrder = 999;
+      plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
+      markerScene.add( plane );
+
+      if (currentData.isObj) {
+        new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
+          materials.preload();
+          new THREE.OBJLoader().setMaterials(materials).setPath('./assets/').load(currentData.objAsset, function (object) {
+            // object.position.y = - 95;
+            object.scale.x = 0.1
+            object.scale.y = 0.1
+            object.scale.z = 0.1
+            object.rotation.x = Math.PI/2
+            object.rotation.y = Math.PI
+            object.rotation.z = Math.PI/2
+            object.position.x -= 1.5
+            // object.position.y += 0.01
+
+            for (var child in object.children) {
+              object.children[child].material.clippingPlanes = [ geometry ];
+              object.children[child].material.clipShadows = true;
+            }
+
+            markerScene.add( object );
+          }, function ( xhr ) { }, function ( xhr ) { } );
+        });
+      }
+
+      return markerGroup;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////
+    //		END ARTWORK SECTION
+    //////////////////////////////////////////////////////////////////////////////////
 
     //////////////////////////////////////////////////////////////////////////////////
     //		render the whole thing on the page
@@ -285,13 +346,13 @@
   </script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
-    gtag('config', 'UA-118805418-1');
+    gtag('config', 'UA-118805418-2');
   </script>
   <noscript>
     Javascript is required to run this app!

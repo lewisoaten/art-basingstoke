@@ -246,6 +246,17 @@
       var markerScene = new THREE.Scene()
       markerGroup.add(markerScene)
 
+      var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
+      var material = new THREE.MeshBasicMaterial({
+        map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
+        side: THREE.DoubleSide,
+        opacity: 0.9,
+      });
+      var plane = new THREE.Mesh( geometry, material );
+      plane.rotation.x = Math.PI/2
+      plane.rotation.z = Math.PI/2
+      plane.position.y += 0.2
+      markerScene.add( plane );
 
       if (currentData.isObj) {
         new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
@@ -261,22 +272,15 @@
             object.position.x -= 1.5
             // object.position.y += 0.01
 
+            for (var child in object.children) {
+              object.children[child].material.clippingPlanes = [ geometry ];
+              object.children[child].material.clipShadows = true;
+            }
+
             markerScene.add( object );
           }, function ( xhr ) { }, function ( xhr ) { } );
         });
       }
-
-      var geometry = new THREE.PlaneGeometry( 6000/1500, 2550/1500, 1, 1 );
-      var material = new THREE.MeshBasicMaterial({
-        map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
-        side: THREE.DoubleSide,
-        opacity: 0.9,
-      });
-      var plane = new THREE.Mesh( geometry, material );
-      plane.rotation.x = Math.PI/2
-      plane.rotation.z = Math.PI/2
-      plane.position.y += 0.2
-      markerScene.add( plane );
 
       return markerGroup;
     }

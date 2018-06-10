@@ -264,13 +264,13 @@
         opacity: 0.9,
         depthTest: false
       });
-      material.renderOrder = 999;
-      material.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
 
       var plane = new THREE.Mesh( geometry, material );
       plane.rotation.x = Math.PI/2
       plane.rotation.z = Math.PI/2
-      plane.position.y += 0.1
+      plane.position.y = 0
+      plane.renderOrder = 999;
+      plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
       markerScene.add( plane );
 
       if (currentData.isObj) {

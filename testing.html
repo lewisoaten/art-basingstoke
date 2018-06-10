@@ -205,7 +205,7 @@
 
     onRenderFcts.push(function(){
       var intersects = raycaster.intersectObjects(worldObjects);
-      if (intersects) {
+      if (intersects && intersects.length>0) {
         for (var object in intersects) {
           $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
           $(".title:first")[0].visible = true;

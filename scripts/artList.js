@@ -1,9 +1,29 @@
 const data = [
   {
+    id: 1,
+    title: "All Our Own Crafts",
+    description: "...",
+    imgAsset: "All_Our_Own_Crafts.webp",
+    mtlAsset: "3d-model.mtl",
+    objAsset: "3d-model.obj",
+    scale: "2 2 2",
+    isObj: true
+  },
+  {
+    id: 2,
+    title: "Annabel 1",
+    description: "...",
+    imgAsset: "Annabel1.webp",
+    mtlAsset: "3d-model.mtl",
+    objAsset: "3d-model.obj",
+    scale: "2 2 2",
+    isObj: true
+  },
+  {
     id: 5,
-    title: "First One",
-    description: "First one blah blah blah.",
-    imgAsset: "1.jpg",
+    title: "Annabel 4",
+    description: "...",
+    imgAsset: "Annabel4.webp",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     scale: "2 2 2",
@@ -11,9 +31,9 @@ const data = [
   },
   {
     id: 20,
-    title: "Second One",
-    description: "Second one blah blah blah.",
-    imgAsset: "2.jpg",
+    title: "Basingstoke Art Class",
+    description: "...",
+    imgAsset: "BasingstokeArtClass.webp",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     scale: "2 2 2",

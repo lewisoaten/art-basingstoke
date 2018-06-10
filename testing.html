@@ -185,10 +185,24 @@
     scene.visible = false
 
     var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
-    
+
+    var worldObjects = {};
+
     for (var artwork in data) {
-      scene.add(createAsset(data[artwork]))
+      var markerGroup = createAsset(data[artwork]);
+      scene.add(markerGroup)
+
+      for (var child in markerGroup.children[0].children) {
+        worldObjects[child] = data[artwork].title
+      }
     }
+
+    onRenderFcts.push(function(){
+      var intersects = raycaster.intersectObjects(Object.keys(worldObjects));
+      if (intersects && intersects.length>0) {
+        $(".title:first")[0].innerHTML=worldObjects[intersects];
+      } else $(".title:first")[0].innerHTML="...";
+    })
 
     function createAsset(currentData) {
       ////////////////////////////////////////////////////////////////////////////////
@@ -257,13 +271,6 @@
       plane.rotation.z = Math.PI/2
       plane.position.y += 0.2
       markerScene.add( plane );
-
-      onRenderFcts.push(function(){
-        var intersects = raycaster.intersectObjects([plane]);
-        if (intersects && intersects.length>0) {
-          $(".title:first")[0].innerHTML=currentData.title;
-        } else $(".title:first")[0].innerHTML="...";
-      })
 
       return markerGroup;
     }

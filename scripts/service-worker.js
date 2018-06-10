@@ -1,8 +1,8 @@
 let CACHE_NAME = "static-cache";
 let urlsToCache = [
-  "./index.html",
-  "./styles/style.css",
-  "./scripts/main.js"
+  "../index.html",
+  "../styles/style.css",
+  "../scripts/main.js"
 ];
 
 self.addEventListener("install", function(event) {

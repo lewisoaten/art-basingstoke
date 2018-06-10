@@ -76,6 +76,7 @@
     function handleRouteError(err) {
       Raven.captureException(err);
       Raven.showReportDialog();
+      location.reload();
     };
 
     try {

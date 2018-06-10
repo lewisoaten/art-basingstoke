@@ -5,7 +5,6 @@ let urlsToCache = [
 
   "../styles/style.css",
 
-  "../scripts/main.js",
   "../scripts/MTLLoader.js",
   "../scripts/OBJLoader.js",
   "../scripts/artList.js",

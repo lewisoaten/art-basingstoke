@@ -259,6 +259,9 @@
         side: THREE.DoubleSide,
         opacity: 0.9,
       });
+      material.renderOrder = 999;
+      material.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
+
       var plane = new THREE.Mesh( geometry, material );
       plane.rotation.x = Math.PI/2
       plane.rotation.z = Math.PI/2

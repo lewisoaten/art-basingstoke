@@ -76,10 +76,11 @@
       logarithmicDepthBuffer: true
     });
     renderer.setClearColor(new THREE.Color('lightgrey'), 0)
-    renderer.setSize( 640, 480 );
+    renderer.setSize( 1024, 768 );
     renderer.domElement.style.position = 'absolute'
     renderer.domElement.style.top = '0px'
     renderer.domElement.style.left = '0px'
+    renderer.domElement.style.zIndex = '-1'
     document.body.appendChild( renderer.domElement );
     // array of functions for the rendering loop
     var onRenderFcts= [];
@@ -168,8 +169,8 @@
     	// tune the maximum rate of pose detection in the source image
     	maxDetectionRate: 60,
     	// resolution of at which we detect pose in the source image
-    	// canvasWidth: 320,
-    	// canvasHeight: 240,
+    	canvasWidth: 1024,
+    	canvasHeight: 768,
 
     	// enable image smoothing or not for canvas copy - default to true
     	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled

@@ -76,7 +76,6 @@
     function handleRouteError(err) {
       Raven.captureException(err);
       Raven.showReportDialog();
-      location.reload();
     };
 
     try {
@@ -394,7 +393,6 @@
       		onRenderFct(deltaMsec/1000, nowMsec/1000)
       	})
       })
-      adddddlert("test")
     } catch (err) {
       handleRouteError(err);
     }

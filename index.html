@@ -30,6 +30,8 @@
   <script src="./scripts/OBJLoader.js"></script>
   <script src="./scripts/artList.js"></script>
   <script src="./scripts/main.js"></script>
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-2"></script>
 </head>
 
 <body>
@@ -223,6 +225,10 @@
       if (intersects && intersects.length>0) {
         for (var object in intersects) {
           if (intersects[object].distance>0) {
+            ga('send', 'screenview', {
+              'appName': 'ARt Basingstoke',
+              'screenName': 'Art: ' + objectTitles[intersects[object].object.uuid]
+            });
             $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
             $(".word-tip").show();
             found = true
@@ -347,7 +353,6 @@
   </script>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118805418-2"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}

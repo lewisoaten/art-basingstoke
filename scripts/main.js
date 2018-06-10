@@ -13,6 +13,11 @@ $(document).ready(function() {
   });
 
   gotitBtn.click(function() {
+    ga('send', {
+      hitType: 'event',
+      eventCategory: 'Screens',
+      eventAction: 'start'
+    });
     gotitBtn.parent().css({
       display: "none"
     });

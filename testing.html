@@ -255,7 +255,7 @@
       var plane = new THREE.Mesh( geometry, material );
       plane.rotation.x = Math.PI/2
       plane.rotation.z = Math.PI/2
-      plane.position.y += 0.2
+      plane.position.y - 0
       markerScene.add( plane );
 
       if (currentData.isObj) {
@@ -269,7 +269,7 @@
             object.rotation.x = Math.PI/2
             object.rotation.y = Math.PI
             object.rotation.z = Math.PI/2
-            object.position.x -= 1.5
+            object.position.x = 0
             // object.position.y += 0.01
 
             for (var child in object.children) {

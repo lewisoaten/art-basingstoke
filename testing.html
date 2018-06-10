@@ -22,8 +22,8 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/examples/vendor/three.js/build/three.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.1/three.js/build/ar.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/examples/vendor/three.js/build/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.js"></script>
   <script src="./scripts/MTLLoader.js"></script>
   <script src="./scripts/OBJLoader.js"></script>
   <script src="./scripts/artList.js"></script>
@@ -203,6 +203,7 @@
         var object = markerGroup.children[0].children[child];
         data[artwork].objects.push(object.uuid);
         objectTitles[object.uuid] = data[artwork].title
+        worldObjects.push(object);
       }
     }
 
@@ -255,8 +256,7 @@
       plane.rotation.x = Math.PI/2
       plane.rotation.z = Math.PI/2
       plane.position.y = 0
-      markerScene.add(plane);
-      worldObjects.push(plane);
+      markerScene.add( plane );
 
       if (currentData.isObj) {
         new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {

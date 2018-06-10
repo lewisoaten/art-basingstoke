@@ -1,0 +1,8 @@
+{
+  "name": "ARt Basingstoke",
+  "short_name": "ARt Basingstoke",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FF9800",
+  "theme_color": "#FF9800"
+}

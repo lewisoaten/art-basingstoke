@@ -1,8 +1,21 @@
 let CACHE_NAME = "static-cache";
 let urlsToCache = [
   "../index.html",
+  "../testing.html",
+
   "../styles/style.css",
-  "../scripts/main.js"
+
+  "../scripts/main.js",
+  "../scripts/MTLLoader.js",
+  "../scripts/OBJLoader.js",
+  "../scripts/artList.js",
+
+  "../assets/1.jpg",
+  "../assets/2.jpg",
+  "../assets/3d-model.mtl",
+  "../assets/3d-model.obj",
+  "../assets/camera_para.dat",
+  "../assets/test_2_compress.mp4"
 ];
 
 self.addEventListener("install", function(event) {

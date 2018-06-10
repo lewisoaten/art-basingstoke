@@ -83,6 +83,9 @@
     // init scene and camera
     var scene	= new THREE.Scene();
 
+    var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+    scene.add( ambientLight );
+
     //////////////////////////////////////////////////////////////////////////////////
     //		Initialize a basic camera
     //////////////////////////////////////////////////////////////////////////////////
@@ -242,9 +245,6 @@
       var markerScene = new THREE.Scene()
       markerGroup.add(markerScene)
 
-      var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-      markerScene.add( ambientLight );
-
 
       if (currentData.isObj) {
         new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
@@ -260,7 +260,7 @@
             object.position.x -= 1.5
             // object.position.y += 0.01
 
-            markerScene.add( object.clone() );
+            markerScene.add( object );
           }, function ( xhr ) { }, function ( xhr ) { } );
         });
       }

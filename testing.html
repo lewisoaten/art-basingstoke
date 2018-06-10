@@ -262,6 +262,7 @@
         map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
         side: THREE.DoubleSide,
         opacity: 0.9,
+        depthTest: false
       });
       material.renderOrder = 999;
       material.onBeforeRender = function( renderer ) { renderer.clearDepth(); };

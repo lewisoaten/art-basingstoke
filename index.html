@@ -24,6 +24,11 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+  <script src="https://cdn.ravenjs.com/3.26.1/raven.min.js" crossorigin="anonymous"></script>
+  <script>
+    Raven.config('https://d38619920a984e2494fede0853163bd2@sentry.io/1222993').install()
+  </script>
+
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/examples/vendor/three.js/build/three.min.js"></script>
   <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.min.js"></script>
   <script src="./scripts/MTLLoader.js"></script>
@@ -65,6 +70,7 @@
   <script>
     window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
     ga('create', 'UA-118805418-2', 'auto');
+    ga('set', 'appName', 'ARt Basingstoke');
     ga('send', 'pageview');
 
     $(document).ready(function() {
@@ -80,7 +86,7 @@
       gotitBtn.click(function() {
         ga('send', {
           hitType: 'event',
-          eventCategory: 'Screens',
+          eventCategory: 'popups',
           eventAction: 'start'
         });
         gotitBtn.parent().css({

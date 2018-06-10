@@ -193,7 +193,7 @@
       scene.add(markerGroup)
 
       for (var child in markerGroup.children[0].children) {
-        worldObjects[child] = data[artwork].title
+        worldObjects[markerGroup.children[0].children[child]] = data[artwork].title
       }
     }
 

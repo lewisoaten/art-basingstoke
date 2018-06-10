@@ -220,9 +220,11 @@
       var intersects = raycaster.intersectObjects(worldObjects);
       if (intersects && intersects.length>0) {
         for (var object in intersects) {
-          $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
-          $(".word-tip").show();
-          break;
+          if (intersects[object].distance>0) {
+            $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
+            $(".word-tip").show();
+            break;
+          }
         }
       } else $(".word-tip").hide();
     })
@@ -267,7 +269,7 @@
       var plane = new THREE.Mesh( geometry, material );
       plane.rotation.x = Math.PI/2
       plane.rotation.z = Math.PI/2
-      plane.position.y = 0
+      plane.position.y += 0.1
       markerScene.add( plane );
 
       if (currentData.isObj) {

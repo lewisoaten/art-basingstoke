@@ -7,7 +7,7 @@ const data = [
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     scale: "2 2 2",
-    isObj: false
+    isObj: true
   },
   {
     id: 20,
@@ -17,6 +17,6 @@ const data = [
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     scale: "2 2 2",
-    isObj: false
+    isObj: true
   }
 ];

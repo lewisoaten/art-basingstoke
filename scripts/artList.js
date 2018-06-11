@@ -6,6 +6,8 @@ const data = [
     imgAsset: "Annabel4 2 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2050,
     scale: "2 2 2",
     isObj: true
   },
@@ -16,6 +18,8 @@ const data = [
     imgAsset: "Annabel4 2.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2050,
     scale: "2 2 2",
     isObj: true
   },
@@ -26,6 +30,8 @@ const data = [
     imgAsset: "BasingstokeArtClass copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -36,6 +42,8 @@ const data = [
     imgAsset: "Emily_Mcbrayne 2 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2000,
+    height: 1500,
     scale: "2 2 2",
     isObj: true
   },
@@ -46,6 +54,8 @@ const data = [
     imgAsset: "Emily_Mcbrayne 3 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2048,
+    height: 2048,
     scale: "2 2 2",
     isObj: true
   },
@@ -56,6 +66,8 @@ const data = [
     imgAsset: "Emily_Mcbrayne copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -66,6 +78,8 @@ const data = [
     imgAsset: "Helena_iPad copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -76,6 +90,8 @@ const data = [
     imgAsset: "iPad_1 2 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 4096,
+    height: 2867,
     scale: "2 2 2",
     isObj: true
   },
@@ -86,6 +102,8 @@ const data = [
     imgAsset: "Lillian-_Let's_Make_A_Deal 2 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -96,6 +114,8 @@ const data = [
     imgAsset: "Lillian-_Let's_Make_A_Deal copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -106,6 +126,8 @@ const data = [
     imgAsset: "Lissie_ 2 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -116,6 +138,8 @@ const data = [
     imgAsset: "Lissie_ copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -126,6 +150,8 @@ const data = [
     imgAsset: "Maddie1 copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -136,6 +162,8 @@ const data = [
     imgAsset: "Scream_iPad copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -146,6 +174,8 @@ const data = [
     imgAsset: "Student1a copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 4000,
+    height: 3000,
     scale: "2 2 2",
     isObj: true
   },
@@ -156,6 +186,8 @@ const data = [
     imgAsset: "Student2a copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -166,6 +198,8 @@ const data = [
     imgAsset: "Studentbb copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 1536,
+    height: 2048,
     scale: "2 2 2",
     isObj: true
   },
@@ -176,6 +210,8 @@ const data = [
     imgAsset: "Studentcc_ copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -186,6 +222,8 @@ const data = [
     imgAsset: "Studentdd_ copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 4096,
+    height: 2867,
     scale: "2 2 2",
     isObj: true
   },
@@ -196,6 +234,8 @@ const data = [
     imgAsset: "Students copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -206,6 +246,8 @@ const data = [
     imgAsset: "ThatGallery copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -216,6 +258,8 @@ const data = [
     imgAsset: "Viable copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
     scale: "2 2 2",
     isObj: true
   },
@@ -226,6 +270,8 @@ const data = [
     imgAsset: "When_Robots_Attack_-_Proteus copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   },
@@ -236,6 +282,32 @@ const data = [
     imgAsset: "Willis_Museum.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
+    scale: "2 2 2",
+    isObj: true
+  },
+  {
+    id: 25,
+    title: "All_Our_Own_Crafts copy",
+    description: "...",
+    imgAsset: "All_Our_Own_Crafts copy.jpg",
+    mtlAsset: "3d-model.mtl",
+    objAsset: "3d-model.obj",
+    width: 6000,
+    height: 2550,
+    scale: "2 2 2",
+    isObj: true
+  },
+  {
+    id: 26,
+    title: "Annabel1 copy",
+    description: "...",
+    imgAsset: "Annabel1 copy.jpg",
+    mtlAsset: "3d-model.mtl",
+    objAsset: "3d-model.obj",
+    width: 2867,
+    height: 4096,
     scale: "2 2 2",
     isObj: true
   }

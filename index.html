@@ -58,6 +58,14 @@
 
     function handleRouteError(err) {
       Raven.captureException(err);
+      ga('send', 'exception', {
+        'exDescription': err.message,
+        'exFatal': false
+      });
+      ga('send', 'screenview', {
+        'appName': 'ARt Basingstoke',
+        'screenName': 'error-page'
+      });
       Raven.showReportDialog();
     };
 

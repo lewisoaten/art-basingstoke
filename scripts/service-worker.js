@@ -9,12 +9,30 @@ let urlsToCache = [
   "../scripts/OBJLoader.js",
   "../scripts/artList.js",
 
-  "../assets/1.jpg",
-  "../assets/2.jpg",
   "../assets/3d-model.mtl",
   "../assets/3d-model.obj",
   "../assets/camera_para.dat",
-  "../assets/test_2_compress.mp4"
+
+  "../assets/Studentbb copy.jpg",
+  "../assets/Maddie1 copy.jpg",
+  "../assets/All_Our_Own_Crafts copy.jpg",
+  "../assets/iPad_1 2 copy.jpg",
+  "../assets/Scream_iPad copy.jpg",
+  "../assets/When_Robots_Attack_-_Proteus copy.jpg",
+  "../assets/Emily_Mcbrayne 3 copy.jpg",
+  "../assets/Student1a copy.jpg",
+  "../assets/Annabel1 copy.jpg",
+  "../assets/ThatGallery copy.jpg",
+  "../assets/Students copy.jpg",
+  "../assets/Student2a copy.jpg",
+  "../assets/Studentdd_ copy.jpg",
+  "../assets/BasingstokeArtClass copy.jpg",
+  "../assets/Lissie_ 2 copy.jpg",
+  "../assets/Studentcc_ copy.jpg",
+  "../assets/Willis_Museum.jpg",
+  "../assets/Helena_iPad copy.jpg",
+  "../assets/Lillian-_Let's_Make_A_Deal 2 copy.jpg",
+  "../assets/Viable copy.jpg"
 ];
 
 self.addEventListener("install", function(event) {

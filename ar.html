@@ -279,7 +279,7 @@
       var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
 
       var worldObjects = [];
-      var objectTitles = {};
+      var objectArtwork = {};
 
       for (var artwork in data) {
         var markerGroup = createAsset(data[artwork]);
@@ -301,14 +301,14 @@
         if (intersects && intersects.length>0) {
           for (var object in intersects) {
             if (intersects[object].distance>0) {
-              if ($(".title:first")[0].innerHTML != objectTitles[intersects[object].object.uuid].title) {
+              if ($(".title:first")[0].innerHTML != objectArtwork[intersects[object].object.uuid].title) {
                 ga('send', {
                   hitType: 'event',
                   eventCategory: 'ar',
                   eventAction: 'artview',
                   eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
                 });
-                $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid].title;
+                $(".title:first")[0].innerHTML=objectArtwork[intersects[object].object.uuid].title;
               }
               $(".word-tip").show();
               found = true

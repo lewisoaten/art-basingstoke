@@ -81,6 +81,7 @@ body {
 .prev,
 .rotate,
 .scale,
+.support,
 .volume-up {
   background-size: 60%;
   background-repeat: no-repeat;
@@ -110,6 +111,10 @@ body {
   background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_volume_up_white_24px.svg);
   border-top-right-radius: 18px;
   border-bottom-right-radius: 18px;
+}
+
+.support {
+  background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_help_outline_white_24px.svg);
 }
 
 .rotate_fade {

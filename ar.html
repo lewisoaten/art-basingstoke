@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta aframe-injected="" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+  <meta aframe-injected="" name="mobile-web-app-capable" content="yes">
+  <meta description="ARt Basingstoke exploring art in unusual spaces with Augmented Reality.">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@lewisoaten" />
+  <meta name="twitter:title" content="ARt Basingstoke" />
+  <meta name="twitter:description" content="ARt Basingstoke exploring art in unusual spaces with Augmented Reality."
+  />
+  <meta name="twitter:image" content="https://github.com/lewisoaten/art-basingstoke" />
+
+  <title>
+    ARt Basingstoke - Art in unusual spaces with Augmented Reality
+  </title>
+
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="https://cdn.ravenjs.com/3.26.1/raven.min.js" crossorigin="anonymous"></script>
+  <script>
+    Raven.config('https://d38619920a984e2494fede0853163bd2@sentry.io/1222993').install()
+  </script>
+
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/examples/vendor/three.js/build/three.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.6.0/three.js/build/ar.min.js"></script>
+  <script src="./scripts/MTLLoader.js"></script>
+  <script src="./scripts/OBJLoader.js"></script>
+  <script src="./scripts/artList.js"></script>
+</head>
+
+<body>
+  <main class="main">
+    <div id="header">
+      <div id="header-content">
+        <div>ARt Basingstoke</div>
+      </div>
+    </div>
+    <div id="splashScreen" class="AR-tip" style="display:none">
+      <p>Art in unusual spaces with Augmented Reality.
+        <div>
+          <a href="#" class="help" style="font-size:14px;">How it works?</a>
+        </div>
+        <div id="video_demo" class="demo" style="display:none">
+          <p style="font-size:1em; font-weight:600">Press Start, then point your phone camera towards the AR code. Look for other AR codes and explore art in unexpected places.</p>
+        </div>
+      </p>
+      <div class="gotit btn custom-button">Start</div>
+    </div>
+    <div class="word-tip">
+      <div class="title">...</div>
+    </div>
+
+    <div class="btns-wrap">
+      <div title="Help" class="btn support custom-button"></div>
+    </div>
+    <div class="AR-tip" id="noMedia" style="display:none">
+    </div>
+  </main>
+
+  <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-118805418-2', 'auto');
+    ga('set', 'appName', 'ARt Basingstoke');
+    ga('send', 'pageview');
+
+    function handleRouteError(err) {
+      Raven.captureException(err);
+      Raven.showReportDialog();
+    };
+
+    try {
+      $(document).ready(function() {
+        var helpBtn = $(".help"),
+          gotitBtn = $(".gotit"),
+          supportBtn = $(".support");
+
+        helpBtn.click(function(e) {
+          e.preventDefault();
+          console.log($("#video_demo")[0]);
+          $("#video_demo")[0].style.display = "block";
+        });
+
+        gotitBtn.click(function() {
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'popups',
+            eventAction: 'start'
+          });
+          gotitBtn.parent().css({
+            display: "none"
+          });
+        });
+
+        supportBtn.click(function() {
+          ga('send', {
+            hitType: 'event',
+            eventCategory: 'popups',
+            eventAction: 'help'
+          });
+          gotitBtn.parent().show();
+        });
+
+        //Camera feature check
+        function hasGetUserMedia() {
+          return !!(
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia
+          );
+        }
+
+        if (hasGetUserMedia()) {
+          // Good to go!
+          $("#splashScreen").css("display", "block");
+        } else {
+          let template = "<p>This feature is not supported in your browser.</p>";
+          $("#noMedia").append(template);
+          $("#noMedia").css("display", "block");
+        }
+      });
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		Init
+      //////////////////////////////////////////////////////////////////////////////////
+      // init renderer
+      var trackingBackend = 'artoolkit'; // aruco or artoolkit
+
+      var renderer	= new THREE.WebGLRenderer({
+      	antialias: true,
+      	alpha: true,
+        logarithmicDepthBuffer: true
+      });
+      renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+      renderer.setSize( 1024, 768 );
+      renderer.domElement.style.position = 'absolute'
+      renderer.domElement.style.top = '0px'
+      renderer.domElement.style.left = '0px'
+      renderer.domElement.style.zIndex = '-1'
+      document.body.appendChild( renderer.domElement );
+      // array of functions for the rendering loop
+      var onRenderFcts= [];
+      // init scene and camera
+      var scene	= new THREE.Scene();
+
+      var ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
+      scene.add( ambientLight );
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		Initialize a basic camera
+      //////////////////////////////////////////////////////////////////////////////////
+      // Create a camera
+      if( trackingBackend === 'aruco' ){
+        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+      }else if( trackingBackend === 'artoolkit' ){
+        var camera = new THREE.PerspectiveCamera(42, renderer.domElement.width / renderer.domElement.height, 0.01, 100);
+      }else console.assert(false)
+
+      var pointLight = new THREE.PointLight( 0xffffff, 0.8 );
+      camera.add( pointLight );
+      scene.add(camera);
+      ////////////////////////////////////////////////////////////////////////////////
+      //          handle arToolkitSource
+      ////////////////////////////////////////////////////////////////////////////////
+      var arToolkitSource = new THREEx.ArToolkitSource({
+        // type of source - ['webcam', 'image', 'video']
+      	sourceType : 'webcam',
+      	// url of the source - valid if sourceType = image|video
+      	sourceUrl : './assets/test_2_compress.mp4',
+
+      	// resolution of at which we initialize the source image
+      	// sourceWidth: 1280,
+      	// sourceHeight: 720,
+      	// resolution displayed for the source
+      	// displayWidth: 640,
+      	// displayHeight: 480,
+      })
+      arToolkitSource.init(function onReady(){
+      	onResize()
+      })
+
+      // handle resize
+      window.addEventListener('resize', function(){
+      	onResize()
+      })
+
+      function onResize(){
+        // Possible fix for portrait mode
+        arToolkitSource.onResizeElement()
+        arToolkitSource.copyElementSizeTo(renderer.domElement)
+        setTimeout(function(){
+            arToolkitSource.onResizeElement()
+            arToolkitSource.copyElementSizeTo(renderer.domElement)
+        }, 500);
+        // arToolkitSource.onResize()
+        // arToolkitSource.copySizeTo(renderer.domElement)
+        // if( trackingBackend === 'aruco' ){
+    		// 	arToolkitSource.copyElementSizeTo(arToolkitContext.arucoContext.canvas)
+    		// 	camera.aspect = renderer.domElement.width / renderer.domElement.height;
+    		// 	camera.updateProjectionMatrix();
+    		// }else if( trackingBackend === 'artoolkit' ){
+    		// 	if( arToolkitContext.arController !== null ){
+    		// 		arToolkitSource.copyElementSizeTo(arToolkitContext.arController.canvas)
+    		// 	}
+    		// }else console.assert(false)
+      }
+      ////////////////////////////////////////////////////////////////////////////////
+      //          initialize arToolkitContext
+      ////////////////////////////////////////////////////////////////////////////////
+
+      // create atToolkitContext
+      var arToolkitContext = new THREEx.ArToolkitContext({
+        // debug - true if one should display artoolkit debug canvas, false otherwise
+      	debug: false,
+        // artoolkit, aruco, best
+        trackingBackend: trackingBackend,
+      	// the mode of detection - ['color', 'color_and_matrix', 'mono', 'mono_and_matrix']
+      	detectionMode: 'mono_and_matrix',
+      	// type of matrix code - valid iif detectionMode end with 'matrix' - [3x3, 3x3_HAMMING63, 3x3_PARITY65, 4x4, 4x4_BCH_13_9_3, 4x4_BCH_13_5_5]
+      	matrixCodeType: '3x3',
+
+      	// url of the camera parameters
+      	cameraParametersUrl: './assets/camera_para.dat',
+
+      	// tune the maximum rate of pose detection in the source image
+      	maxDetectionRate: 60,
+      	// resolution of at which we detect pose in the source image
+      	canvasWidth: 1024,
+      	canvasHeight: 768,
+
+      	// enable image smoothing or not for canvas copy - default to true
+      	// https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/imageSmoothingEnabled
+      	imageSmoothingEnabled : true,
+      })
+      // initialize it
+      arToolkitContext.init(function onCompleted(){
+      	// copy projection matrix to camera
+        if( trackingBackend === 'artoolkit' ){
+          camera.projectionMatrix.copy( arToolkitContext.getProjectionMatrix() );
+        }
+      })
+      // update artoolkit on every frame
+      onRenderFcts.push(function(){
+      	if( arToolkitSource.ready === false )	return
+      	arToolkitContext.update( arToolkitSource.domElement )
+
+      	// update scene.visible if the marker is seen
+      	scene.visible = camera.visible
+      })
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		BEGIN ARTWORK SECTION
+      //////////////////////////////////////////////////////////////////////////////////
+      // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
+      scene.visible = false
+
+      var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
+
+      var worldObjects = [];
+      var objectTitles = {};
+
+      for (var artwork in data) {
+        var markerGroup = createAsset(data[artwork]);
+        scene.add(markerGroup);
+
+        data[artwork].objects = [];
+
+        for (var child in markerGroup.children[0].children) {
+          var object = markerGroup.children[0].children[child];
+          data[artwork].objects.push(object.uuid);
+          objectTitles[object.uuid] = data[artwork].title
+          worldObjects.push(object);
+        }
+      }
+
+      onRenderFcts.push(function(){
+        var intersects = raycaster.intersectObjects(worldObjects);
+        var found = false
+        if (intersects && intersects.length>0) {
+          for (var object in intersects) {
+            if (intersects[object].distance>0) {
+              ga('send', 'screenview', {
+                'appName': 'ARt Basingstoke',
+                'screenName': 'Art: ' + objectTitles[intersects[object].object.uuid]
+              });
+              $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
+              $(".word-tip").show();
+              found = true
+              break;
+            }
+          }
+        }
+
+        if (!found) {
+          $(".word-tip").hide();
+        }
+      })
+
+      function createAsset(currentData) {
+        ////////////////////////////////////////////////////////////////////////////////
+        //          Create a ArMarkerControls
+        ////////////////////////////////////////////////////////////////////////////////
+
+        var markerGroup = new THREE.Group
+
+        // init controls for camera // markerGroup for modelViewMatrix and camera for cameraTransformMatrix
+        var markerControls = new THREEx.ArMarkerControls(arToolkitContext, markerGroup, {
+          // size of the marker in meter
+          size : 1,
+          // type of marker - ['pattern', 'barcode', 'unknown' ]
+          type : 'barcode',
+          // url of the pattern - IIF type='pattern'
+          patternUrl : null,
+          // value of the barcode - IIF type='barcode'
+          barcodeValue : currentData.id,
+          // change matrix mode - [modelViewMatrix, cameraTransformMatrix]
+          changeMatrixMode : 'modelViewMatrix',
+        })
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //		add an object in the scene
+        //////////////////////////////////////////////////////////////////////////////////
+
+        var markerScene = new THREE.Scene()
+        markerGroup.add(markerScene)
+
+        var geometry = new THREE.PlaneGeometry( currentData.width/1500, currentData.height/1500, 1, 1 );
+        var material = new THREE.MeshBasicMaterial({
+          map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
+          side: THREE.DoubleSide,
+          opacity: 0.9,
+          depthTest: false
+        });
+
+        var plane = new THREE.Mesh( geometry, material );
+        plane.rotation.x = Math.PI/2
+        plane.rotation.z = Math.PI/2
+        plane.position.y = 0
+        plane.renderOrder = 999;
+        plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
+        markerScene.add( plane );
+
+        if (currentData.isObj) {
+          new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
+            materials.preload();
+            new THREE.OBJLoader().setMaterials(materials).setPath('./assets/').load(currentData.objAsset, function (object) {
+              // object.position.y = - 95;
+              object.scale.x = 0.1 * (currentData.width/6000)
+              object.scale.y = 0.1 * (currentData.height/2550)
+              object.scale.z = 0.1
+              object.rotation.x = Math.PI/2
+              object.rotation.y = Math.PI
+              object.rotation.z = Math.PI/2
+              object.position.x -= 1.5
+              // object.position.y += 0.01
+
+              for (var child in object.children) {
+                object.children[child].material.clippingPlanes = [ geometry ];
+                object.children[child].material.clipShadows = true;
+              }
+
+              markerScene.add( object );
+            }, function ( xhr ) { }, function ( xhr ) { } );
+          });
+        }
+
+        return markerGroup;
+      }
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		END ARTWORK SECTION
+      //////////////////////////////////////////////////////////////////////////////////
+
+      //////////////////////////////////////////////////////////////////////////////////
+      //		render the whole thing on the page
+      //////////////////////////////////////////////////////////////////////////////////
+      // render the scene
+      onRenderFcts.push(function(){
+      	renderer.render( scene, camera );
+      })
+      // run the rendering loop
+      var lastTimeMsec= null
+      requestAnimationFrame(function animate(nowMsec){
+      	// keep looping
+      	requestAnimationFrame( animate );
+      	// measure time
+      	lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
+      	var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
+      	lastTimeMsec	= nowMsec
+      	// call each update function
+      	onRenderFcts.forEach(function(onRenderFct){
+      		onRenderFct(deltaMsec/1000, nowMsec/1000)
+      	})
+      })
+    } catch (err) {
+      handleRouteError(err);
+    }
+  </script>
+
+  <script async>
+  if ('serviceWorker' in navigator) {
+    console.log("Will the service worker register?");
+    navigator.serviceWorker.register('scripts/service-worker.js')
+      .then(function (reg) {
+        console.log("Yes, it did.");
+      }).catch(function (err) {
+        console.log("No it didn't. This happened: ", err)
+      });
+  }
+  </script>
+
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <noscript>
+    Javascript is required to run this app!
+  </noscript>
+
+
+</body>
+
+</html>

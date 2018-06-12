@@ -70,9 +70,17 @@
     ga('create', 'UA-118805418-2', 'auto');
     ga('set', 'appName', 'ARt Basingstoke');
     ga('send', 'pageview');
+    ga('send', 'screenview', {
+      'appName': 'ARt Basingstoke',
+      'screenName': 'start'
+    });
 
     function handleRouteError(err) {
       Raven.captureException(err);
+      ga('send', 'screenview', {
+        'appName': 'ARt Basingstoke',
+        'screenName': 'error-page'
+      });
       Raven.showReportDialog();
     };
 
@@ -86,13 +94,16 @@
           e.preventDefault();
           console.log($("#video_demo")[0]);
           $("#video_demo")[0].style.display = "block";
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'support-detailed'
+          });
         });
 
         gotitBtn.click(function() {
-          ga('send', {
-            hitType: 'event',
-            eventCategory: 'popups',
-            eventAction: 'start'
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'ar-viewer'
           });
           gotitBtn.parent().css({
             display: "none"
@@ -100,10 +111,9 @@
         });
 
         supportBtn.click(function() {
-          ga('send', {
-            hitType: 'event',
-            eventCategory: 'popups',
-            eventAction: 'help'
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'support'
           });
           gotitBtn.parent().show();
         });
@@ -276,7 +286,7 @@
         for (var child in markerGroup.children[0].children) {
           var object = markerGroup.children[0].children[child];
           data[artwork].objects.push(object.uuid);
-          objectTitles[object.uuid] = data[artwork].title
+          objectArtwork[object.uuid] = data[artwork]
           worldObjects.push(object);
         }
       }
@@ -287,11 +297,15 @@
         if (intersects && intersects.length>0) {
           for (var object in intersects) {
             if (intersects[object].distance>0) {
-              ga('send', 'screenview', {
-                'appName': 'ARt Basingstoke',
-                'screenName': 'Art: ' + objectTitles[intersects[object].object.uuid]
-              });
-              $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid];
+              if ($(".title:first")[0].innerHTML != objectTitles[intersects[object].object.uuid].title) {
+                ga('send', {
+                  hitType: 'event',
+                  eventCategory: 'ar',
+                  eventAction: 'artview',
+                  eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
+                });
+                $(".title:first")[0].innerHTML=objectTitles[intersects[object].object.uuid].title;
+              }
               $(".word-tip").show();
               found = true
               break;
@@ -300,6 +314,7 @@
         }
 
         if (!found) {
+          $(".title:first")[0].innerHTML="...";
           $(".word-tip").hide();
         }
       })

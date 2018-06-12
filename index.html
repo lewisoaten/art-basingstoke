@@ -51,6 +51,10 @@
     ga('create', 'UA-118805418-2', 'auto');
     ga('set', 'appName', 'ARt Basingstoke');
     ga('send', 'pageview');
+    ga('send', 'screenview', {
+      'appName': 'ARt Basingstoke',
+      'screenName': 'splashscreen'
+    });
 
     function handleRouteError(err) {
       Raven.captureException(err);

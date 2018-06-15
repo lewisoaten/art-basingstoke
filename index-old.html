@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta aframe-injected="" name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,shrink-to-fit=no,user-scalable=no,minimal-ui">
+  <meta aframe-injected="" name="mobile-web-app-capable" content="yes">
+  <meta description="ARt Basingstoke exploring art in unusual spaces with Augmented Reality.">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@lewisoaten" />
+  <meta name="twitter:title" content="ARt Basingstoke" />
+  <meta name="twitter:description" content="ARt Basingstoke exploring art in unusual spaces with Augmented Reality."
+  />
+  <meta name="twitter:image" content="https://github.com/lewisoaten/art-basingstoke" />
+
+  <title>
+    ARt Basingstoke - Art in unusual spaces with Augmented Reality
+  </title>
+
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="https://cdn.ravenjs.com/3.26.1/raven.min.js" crossorigin="anonymous"></script>
+  <script>
+    Raven.config('https://d38619920a984e2494fede0853163bd2@sentry.io/1222993').install()
+  </script>
+</head>
+
+<body>
+  <main class="main">
+    <div id="header">
+      <div id="header-content">
+        <div>ARt Basingstoke</div>
+      </div>
+    </div>
+    <div id="splashScreen" class="AR-tip" style="display:none">
+      <p>Art in unusual spaces with Augmented Reality.
+        <div id="countdown"></div>
+      </p>
+    </div>
+    <div class="AR-tip" id="noMedia" style="display:none">
+    </div>
+  </main>
+
+  <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-118805418-2', 'auto');
+    ga('set', 'appName', 'ARt Basingstoke');
+    ga('send', 'pageview');
+    ga('send', 'screenview', {
+      'appName': 'ARt Basingstoke',
+      'screenName': 'splashscreen'
+    });
+
+    function handleRouteError(err) {
+      Raven.captureException(err);
+      ga('send', 'exception', {
+        'exDescription': err.message,
+        'exFatal': false
+      });
+      ga('send', 'screenview', {
+        'appName': 'ARt Basingstoke',
+        'screenName': 'error-page'
+      });
+      Raven.showReportDialog();
+    };
+
+    try {
+      $(document).ready(function() {
+        // Set the date we're counting down to
+        var countDownDate = new Date("Jun 15, 2018 12:00:00").getTime();
+
+        function countdown() {
+
+          // Get todays date and time
+          var now = new Date().getTime();
+
+          // Find the distance between now an the count down date
+          var distance = countDownDate - now;
+
+          // Time calculations for days, hours, minutes and seconds
+          var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          // Display the result in the element with id="demo"
+          document.getElementById("countdown").innerHTML = "Launching in " + days + "d " + hours + "h "
+          + minutes + "m " + seconds + "s ";
+
+          // If the count down is finished, write some text
+          if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("countdown").innerHTML = "STARTING SOON";
+          }
+        }
+
+        // Update the count down every 1 second
+        var x = setInterval(countdown, 1000);
+
+        countdown()
+
+        //Camera feature check
+        function hasGetUserMedia() {
+          return !!(
+            navigator.getUserMedia ||
+            navigator.webkitGetUserMedia ||
+            navigator.mozGetUserMedia ||
+            navigator.msGetUserMedia
+          );
+        }
+
+        if (hasGetUserMedia()) {
+          // Good to go!
+          $("#splashScreen").css("display", "block");
+        } else {
+          let template = "<p>This feature is not supported in your browser.</p>";
+          $("#noMedia").append(template);
+          $("#noMedia").css("display", "block");
+        }
+      });
+    } catch (err) {
+      handleRouteError(err);
+    }
+  </script>
+
+  <script async>
+  if ('serviceWorker' in navigator) {
+    console.log("Will the service worker register?");
+    navigator.serviceWorker.register('scripts/service-worker.js')
+      .then(function (reg) {
+        console.log("Yes, it did.");
+      }).catch(function (err) {
+        console.log("No it didn't. This happened: ", err)
+      });
+  }
+  </script>
+
+  <script async src='https://www.google-analytics.com/analytics.js'></script>
+  <noscript>
+    Javascript is required to run this app!
+  </noscript>
+
+  <script>
+    try {
+      // Feature detects Navigation Timing API support.
+      if (window.performance) {
+        // Gets the number of milliseconds since page load
+        // (and rounds the result since the value must be an integer).
+        var timeSincePageLoad = Math.round(performance.now());
+
+        // Sends the timing hit to Google Analytics.
+        ga('send', 'timing', 'Full Pageload', 'load', timeSincePageLoad);
+      }
+    } catch (err) {
+      handleRouteError(err);
+    }
+  </script>
+
+</body>
+
+</html>

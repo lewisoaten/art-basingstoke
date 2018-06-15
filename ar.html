@@ -207,8 +207,8 @@
         // document.body.getElementsByTagName("canvas")[0].outerHTML = renderer.domElement.outerHTML;
         try {
           document.body.getElementsByTagName("video")[0].srcObject = stream;
-        catch (err) {
-          console.log("Error setting webcam source, maybe no video created yet?: ", err);
+        } catch (error) {
+          console.log("Error setting webcam source, maybe no video created yet?: ", error);
         }
         // video.srcObject = stream;
         // Refresh button list in case labels have become available

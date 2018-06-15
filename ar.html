@@ -276,7 +276,7 @@
       // as we do changeMatrixMode: 'cameraTransformMatrix', start with invisible scene
       scene.visible = false
 
-      var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection());
+      var raycaster = new THREE.Raycaster(camera.position, camera.getWorldDirection(), 0.001);
 
       var worldObjects = [];
       var objectArtwork = {};
@@ -296,24 +296,22 @@
       }
 
       onRenderFcts.push(function(){
-        var intersects = raycaster.intersectObjects(worldObjects);
+        var intersects = raycaster.intersectObjects(worldObjects, true);
         var found = false
         if (intersects && intersects.length>0) {
           for (var object in intersects) {
-            if (intersects[object].distance>0) {
-              if ($(".title:first")[0].innerHTML != objectArtwork[intersects[object].object.uuid].title) {
-                ga('send', {
-                  hitType: 'event',
-                  eventCategory: 'ar',
-                  eventAction: 'artview',
-                  eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
-                });
-                $(".title:first")[0].innerHTML=objectArtwork[intersects[object].object.uuid].title;
-              }
-              $(".word-tip").show();
-              found = true
-              break;
+            if ($(".title:first")[0].innerHTML != objectArtwork[intersects[object].object.uuid].title) {
+              ga('send', {
+                hitType: 'event',
+                eventCategory: 'ar',
+                eventAction: 'artview',
+                eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
+              });
+              $(".title:first")[0].innerHTML=objectArtwork[intersects[object].object.uuid].title;
             }
+            $(".word-tip").show();
+            found = true
+            break;
           }
         }
 

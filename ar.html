@@ -203,8 +203,9 @@
         .catch(handleError);
 
       function gotStream(stream) {
-        renderer.domElement.srcObject = stream; // make stream available to console
-        document.body.getElementsByTagName("canvas")[0].outerHTML = renderer.domElement.outerHTML;
+        // renderer.domElement.srcObject = stream; // make stream available to console
+        // document.body.getElementsByTagName("canvas")[0].outerHTML = renderer.domElement.outerHTML;
+        document.body.getElementsByTagName("video")[0].srcObject = stream;
         // video.srcObject = stream;
         // Refresh button list in case labels have become available
         return navigator.mediaDevices.enumerateDevices();

@@ -8,7 +8,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 1536,
     height: 2048,
-    scale: "2 2 2",
+    scale: 2,
     isObj: true
   },
   {
@@ -20,19 +20,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 3,
-    title: "Liam - All Our Own Crafts",
+    title: "Liam Kelleher - All Our Own Crafts",
     description: "...",
     imgAsset: "All_Our_Own_Crafts copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -44,7 +44,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 4096,
     height: 2867,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -56,19 +56,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 6,
-    title: "Liam - When Robots Attack",
+    title: "Liam Kelleher - When Robots Attack",
     description: "...",
     imgAsset: "When_Robots_Attack_-_Proteus copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -80,7 +80,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2048,
     height: 2048,
-    scale: "2 2 2",
+    scale: 1.5,
     isObj: true
   },
   {
@@ -92,7 +92,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 4000,
     height: 3000,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -104,19 +104,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 10,
-    title: "Liam - That Gallery",
+    title: "Liam Kelleher - That Gallery",
     description: "...",
     imgAsset: "ThatGallery copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -128,7 +128,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -140,7 +140,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -152,19 +152,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 4096,
     height: 2867,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 14,
-    title: "Liam - Basingstoke Art Class",
+    title: "Liam Kelleher - Basingstoke Art Class",
     description: "...",
     imgAsset: "BasingstokeArtClass copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -176,7 +176,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -188,19 +188,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 17,
-    title: "Liam - Willis Museum",
+    title: "Liam Kelleher - Willis Museum",
     description: "...",
     imgAsset: "Willis_Museum.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -212,7 +212,7 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
@@ -224,19 +224,19 @@ const data = [
     objAsset: "3d-model.obj",
     width: 2867,
     height: 4096,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   },
   {
     id: 20,
-    title: "Liam - Viables",
+    title: "Liam Kelleher - Viables",
     description: "...",
     imgAsset: "Viable copy.jpg",
     mtlAsset: "3d-model.mtl",
     objAsset: "3d-model.obj",
     width: 6000,
     height: 2550,
-    scale: "2 2 2",
+    scale: 1,
     isObj: true
   }
 ];

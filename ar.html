@@ -355,30 +355,36 @@
         var material = new THREE.MeshBasicMaterial({
           map:THREE.ImageUtils.loadTexture('assets/' + currentData.imgAsset),
           side: THREE.DoubleSide,
-          opacity: 0.9,
+          opacity: 1.0,
           depthTest: false
         });
 
         var plane = new THREE.Mesh( geometry, material );
         plane.rotation.x = Math.PI/2
-        plane.rotation.z = Math.PI/2
+        plane.rotation.z = Math.PI
         plane.position.y = 0
+        plane.scale.x *= currentData.scale
+        plane.scale.y *= currentData.scale
+        plane.scale.z *= currentData.scale
         plane.renderOrder = 999;
         plane.onBeforeRender = function( renderer ) { renderer.clearDepth(); };
         markerScene.add( plane );
+
+        var yscale = ((currentData.height+500)/4000) * currentData.scale
+        var xscale = ((currentData.width+500)/6000) * currentData.scale
 
         if (currentData.isObj) {
           new THREE.MTLLoader().setPath('./assets/').load(currentData.mtlAsset, function (materials) {
             materials.preload();
             new THREE.OBJLoader().setMaterials(materials).setPath('./assets/').load(currentData.objAsset, function (object) {
               // object.position.y = - 95;
-              object.scale.x = 0.1 * (currentData.width/6000)
-              object.scale.y = 0.1 * (currentData.height/2550)
+              object.scale.x = 0.1 * xscale
+              object.scale.y = 0.1 * yscale
               object.scale.z = 0.1
               object.rotation.x = Math.PI/2
               object.rotation.y = Math.PI
-              object.rotation.z = Math.PI/2
-              object.position.x -= 1.5
+              object.rotation.z = Math.PI
+              object.position.z += yscale+0.55*yscale
               // object.position.y += 0.01
 
               for (var child in object.children) {

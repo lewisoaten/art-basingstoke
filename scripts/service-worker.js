@@ -1,7 +1,6 @@
 let CACHE_NAME = "static-cache";
 let urlsToCache = [
   "../index.html",
-  "../testing.html",
 
   "../styles/style.css",
 

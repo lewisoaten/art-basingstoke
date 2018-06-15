@@ -205,7 +205,11 @@
       function gotStream(stream) {
         // renderer.domElement.srcObject = stream; // make stream available to console
         // document.body.getElementsByTagName("canvas")[0].outerHTML = renderer.domElement.outerHTML;
-        document.body.getElementsByTagName("video")[0].srcObject = stream;
+        try {
+          document.body.getElementsByTagName("video")[0].srcObject = stream;
+        catch (err) {
+          console.log("Error setting webcam source, maybe no video created yet?: ", err);
+        }
         // video.srcObject = stream;
         // Refresh button list in case labels have become available
         return navigator.mediaDevices.enumerateDevices();
@@ -235,8 +239,6 @@
       function handleError(error) {
         console.log("navigator.getUserMedia error: ", error);
       }
-
-      start();
 
       renderer.setClearColor(new THREE.Color('lightgrey'), 0)
       renderer.setSize( 1024, 768 );
@@ -508,6 +510,8 @@
       		onRenderFct(deltaMsec/1000, nowMsec/1000)
       	})
       })
+
+      start();
     } catch (err) {
       handleRouteError(err);
     }

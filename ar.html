@@ -515,7 +515,7 @@
                 eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
               });
               $(".title:first")[0].innerHTML=objectArtwork[intersects[object].object.uuid].title;
-              checkAddTrophie(objectArtwork[intersects[object].object.uuid].id);
+              checkDisplayTrophie(objectArtwork[intersects[object].object.uuid].id);
             }
             $(".word-tip").show();
             found = true

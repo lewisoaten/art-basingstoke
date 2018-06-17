@@ -58,12 +58,12 @@
           </div>
         </div>
       </p>
-      <div>Note, cookies are stored on your device to remember which art you have already seen. If you do not wish for this to happen, please quit the application now.</div>
+      <div>We store cookies on your device to remember which art you have already seen. If you do not wish for this to happen, please quit the application now.</div>
       <div class="gotit btn custom-button">Start</div>
     </div>
     <div id="trophies" class="AR-tip" style="display:none">
       <h2>Find all the art around Basingstoke</h2>
-      <p id="art-found">0/20 found</p>
+      <p id="art-found">0/20 found!</p>
       <div class="row" id="seenArt"></div>
       <div class="gotit btn custom-button">Done</div>
     </div>
@@ -146,7 +146,7 @@
           }
         }
 
-        $("#art-found").html($(".victory").length + "/" + $(".trophie").length + " found");
+        $("#art-found").html($(".victory").length + "/" + $(".trophie").length + " found!");
       }
 
       function addTrophie(id, trophie_icon, text) {
@@ -174,14 +174,25 @@
         $("#seenArt").append(trophie_container);
       }
 
+      function completedPercentage() {
+        return $(".victory").length/$(".trophie").length
+      }
+
       function checkDisplayTrophie(number) {
         var trophies = getCookie("trophies");
         if (trophies == "") trophies = {};
         if (!trophies[number]) {
-            alert("congrats");
             trophies[number] = true;
             setCookie("trophies", trophies, 14)
             updateTrophies();
+
+            ga('send', {
+              hitType: 'event',
+              eventCategory: 'ar',
+              eventAction: 'artfind',
+              eventAction: 'art.' + number,
+              eventValue: Math.floor(completedPercentage() * 100)
+            });
         }
       }
 

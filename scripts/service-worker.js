@@ -1,8 +1,11 @@
+self.importScripts('../scripts/analytics-helper.js');
+
 let CACHE_NAME = "static-cache";
 let urlsToCache = [
   "../index.html",
 
   "../styles/style.css",
+  "../styles/grid.css",
 
   "../scripts/MTLLoader.js",
   "../scripts/OBJLoader.js",
@@ -39,6 +42,9 @@ self.addEventListener("install", function(event) {
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll(urlsToCache);
     })
+  );
+  event.waitUntil(
+    sendAnalyticsEvent('appinstall', 'ar')
   );
 });
 

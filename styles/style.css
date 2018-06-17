@@ -82,6 +82,8 @@ body {
 .rotate,
 .scale,
 .support,
+.trophies,
+.map,
 .volume-up {
   background-size: 60%;
   background-repeat: no-repeat;
@@ -115,6 +117,14 @@ body {
 
 .support {
   background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_help_outline_white_24px.svg);
+}
+
+.trophies {
+  background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_done_white_24px.svg);
+}
+
+.map {
+  background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_place_white_24px.svg);
 }
 
 .rotate_fade {
@@ -192,6 +202,131 @@ body {
 
 .links {
   color: #0078ff;
+}
+
+.trophie {
+  user-select: none;
+  box-sizing: border-box;
+  margin: 9px 9px;
+  background: #aaa;
+  display: inline-block;
+  text-align: center;
+  padding: 8px 15px;
+  transition: all 0.2s;
+  position: relative;
+}
+
+/* Tooltip text */
+.trophie .trophie-name {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    width: 120px;
+    bottom: 110%;
+    left: 50%;
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.trophie:hover .trophie-name, .trophie:active .trophie-name {
+    visibility: visible;
+}
+
+.trophie-icon {
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0px;
+  right:0px;
+}
+
+.victory > div {
+  -webkit-animation-name: tada;
+  -webkit-animation-duration:2s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:linear;
+  -moz-animation-name: tada;
+  -moz-animation-duration:2s;
+  -moz-animation-iteration-count:infinite;
+  -moz-animation-timing-function:linear;
+}
+
+@-webkit-keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%,
+  20% {
+    -webkit-transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(0.9, 0.9, 0.9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%,
+  50%,
+  70%,
+  90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%,
+  60%,
+  80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.victory {
+  background: #00f;
 }
 
 #header {

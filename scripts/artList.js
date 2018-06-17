@@ -9,6 +9,7 @@ const data = [
     width: 1536,
     height: 2048,
     scale: 2,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -21,6 +22,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -33,6 +35,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -45,6 +48,7 @@ const data = [
     width: 4096,
     height: 2867,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -57,6 +61,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "format_italic",
     isObj: true
   },
   {
@@ -69,6 +74,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -81,6 +87,7 @@ const data = [
     width: 2048,
     height: 2048,
     scale: 1.5,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -93,6 +100,7 @@ const data = [
     width: 4000,
     height: 3000,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -105,6 +113,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -117,6 +126,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -129,6 +139,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -141,6 +152,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -153,6 +165,7 @@ const data = [
     width: 4096,
     height: 2867,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -165,6 +178,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -177,6 +191,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -189,6 +204,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -201,6 +217,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -213,6 +230,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -225,6 +243,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   },
   {
@@ -237,6 +256,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
+    trophie_icon: "zoom_in",
     isObj: true
   }
 ];

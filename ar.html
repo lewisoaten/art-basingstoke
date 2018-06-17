@@ -21,6 +21,7 @@
   <link rel="manifest" href="/manifest.json">
 
   <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/grid.css" />
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -44,7 +45,8 @@
       </div>
     </div>
     <div id="splashScreen" class="AR-tip" style="display:none">
-      <p>Art in unusual spaces with Augmented Reality.
+      <h1>Art in unusual spaces with Augmented Reality</h1>
+      <p>
         <div>
           <a href="#" class="help" style="font-size:14px;">How it works?</a>
         </div>
@@ -56,13 +58,27 @@
           </div>
         </div>
       </p>
+      <div>Note, cookies are stored on your device to remember which art you have already seen. If you do not wish for this to happen, please quit the application now.</div>
       <div class="gotit btn custom-button">Start</div>
+    </div>
+    <div id="trophies" class="AR-tip" style="display:none">
+      <h1>Find all the art around Basingstoke</h1>
+      <p id="art-found">0/20 found</p>
+      <div class="row" id="seenArt"></div>
+      <div class="gotit btn custom-button">Done</div>
+    </div>
+    <div id="map" class="AR-tip" style="display:none">
+      <h1>Full map to be revealed soon</h1>
+      <p>Keep exploring in the meantime.</p>
+      <div class="gotit btn custom-button">Done</div>
     </div>
     <div class="word-tip">
       <div class="title">...</div>
     </div>
 
     <div class="btns-wrap">
+      <div title="Map" class="btn map custom-button"></div>
+      <div title="Trophies" class="btn trophies custom-button"></div>
       <div title="Help" class="btn support custom-button"></div>
     </div>
     <div class="AR-tip" id="noMedia" style="display:none">
@@ -93,28 +109,104 @@
     };
 
     try {
+      function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname + "=" + JSON.stringify(cvalue) + ";" + expires + ";path=/";
+      }
+
+      function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return JSON.parse(c.substring(name.length, c.length));
+          }
+        }
+        return "";
+      }
+
+      //Setup trophies
+      function updateTrophies() {
+        var trophies = getCookie("trophies");
+        if (trophies == "") {
+            trophies = {};
+        }
+
+        for(var trophie in trophies) {
+          if (trophies[trophie]) {
+            $("#seenArt > #"+trophie).removeClass("victory");
+            $("#seenArt > #"+trophie).addClass("victory");
+          }
+        }
+
+        $("#art-found").html($(".victory").length + "/" + $(".trophie").length + " found");
+      }
+
+      function addTrophie(id, trophie_icon, text) {
+        var trophie_container = document.createElement( "div" );
+        trophie_container.classList.add("col");
+        trophie_container.classList.add("trophie");
+        trophie_container.id = id;
+
+        var trophie = document.createElement( "div" );
+        trophie.classList.add("trophie-icon");
+        trophie.style =
+          "background-image: url(https://storage.googleapis.com/material-icons/external-assets/v4/icons/svg/ic_" + trophie_icon + "_white_24px.svg);"
+          + " background-size: 100%;"
+          + " background-repeat: no-repeat;"
+          + " background-position: center;";
+
+        var trophie_text = document.createElement( "span" );
+        trophie_text.classList.add("trophie-name");
+        trophie_text.innerHTML = text;
+
+        trophie_container.appendChild(trophie_text);
+
+        trophie_container.appendChild(trophie);
+
+        $("#seenArt").append(trophie_container);
+      }
+
+      function checkDisplayTrophie(number) {
+        var trophies = getCookie("trophies");
+        if (trophies == "") trophies = {};
+        if (!trophies[number]) {
+            alert("congrats");
+            trophies[number] = true;
+            setCookie("trophies", trophies, 14)
+            updateTrophies();
+        }
+      }
+
       $(document).ready(function() {
         var helpBtn = $(".help"),
           gotitBtn = $(".gotit"),
-          supportBtn = $(".support");
-
-        helpBtn.click(function(e) {
-          e.preventDefault();
-          console.log($("#video_demo")[0]);
-          $("#video_demo")[0].style.display = "block";
-          ga('send', 'screenview', {
-            'appName': 'ARt Basingstoke',
-            'screenName': 'support-detailed'
-          });
-        });
+          supportBtn = $(".btns-wrap > .support"),
+          trophiesBtn = $(".btns-wrap > .trophies"),
+          mapBtn = $(".btns-wrap > .map");
 
         gotitBtn.click(function() {
           ga('send', 'screenview', {
             'appName': 'ARt Basingstoke',
             'screenName': 'ar-viewer'
           });
-          gotitBtn.parent().css({
-            display: "none"
+          gotitBtn.parent().hide()
+        });
+
+        helpBtn.click(function(e) {
+          e.preventDefault();
+          console.log($("#video_demo")[0]);
+          $("#video_demo").show();
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'support-detailed'
           });
         });
 
@@ -123,8 +215,28 @@
             'appName': 'ARt Basingstoke',
             'screenName': 'support'
           });
-          gotitBtn.parent().show();
+          gotitBtn.click();
+          $("#splashScreen").show();
         });
+
+        trophiesBtn.click(function() {
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'trophies'
+          });
+          gotitBtn.click();
+          $("#trophies").show();
+        });
+
+        mapBtn.click(function() {
+          ga('send', 'screenview', {
+            'appName': 'ARt Basingstoke',
+            'screenName': 'map'
+          });
+          gotitBtn.click();
+          $("#map").show();
+        });
+
 
         //Camera feature check
         function hasGetUserMedia() {
@@ -139,6 +251,9 @@
         if (hasGetUserMedia()) {
           // Good to go!
           $("#splashScreen").css("display", "block");
+
+          //TEMP
+          trophiesBtn.click();
         } else {
           let template = "<p>This feature is not supported in your browser.</p>";
           $("#noMedia").append(template);
@@ -372,6 +487,9 @@
         var markerGroup = createAsset(data[artwork]);
         scene.add(markerGroup);
 
+        // Setup trophies
+        addTrophie(data[artwork].id, data[artwork].trophie_icon, data[artwork].title)
+
         data[artwork].objects = [];
 
         for (var child in markerGroup.children[0].children) {
@@ -381,6 +499,8 @@
           worldObjects.push(object);
         }
       }
+
+      updateTrophies();
 
       onRenderFcts.push(function(){
         var intersects = raycaster.intersectObjects(worldObjects, true);
@@ -395,6 +515,7 @@
                 eventAction: 'art.' + objectArtwork[intersects[object].object.uuid].id + "." + objectArtwork[intersects[object].object.uuid].title
               });
               $(".title:first")[0].innerHTML=objectArtwork[intersects[object].object.uuid].title;
+              checkAddTrophie(objectArtwork[intersects[object].object.uuid].id);
             }
             $(".word-tip").show();
             found = true
@@ -511,7 +632,7 @@
       	})
       })
 
-      start();
+      // start();  // Use this if we get the stability of custom camera sorted
     } catch (err) {
       handleRouteError(err);
     }

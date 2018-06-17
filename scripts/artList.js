@@ -9,7 +9,7 @@ const data = [
     width: 1536,
     height: 2048,
     scale: 2,
-    trophie_icon: "zoom_in",
+    trophie_icon: "view_carousel",
     isObj: true
   },
   {
@@ -22,7 +22,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "star_half",
     isObj: true
   },
   {
@@ -35,7 +35,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "build",
     isObj: true
   },
   {
@@ -48,7 +48,7 @@ const data = [
     width: 4096,
     height: 2867,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "local_florist",
     isObj: true
   },
   {
@@ -61,7 +61,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "format_italic",
+    trophie_icon: "wallpaper",
     isObj: true
   },
   {
@@ -74,7 +74,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "format_size",
     isObj: true
   },
   {
@@ -87,7 +87,7 @@ const data = [
     width: 2048,
     height: 2048,
     scale: 1.5,
-    trophie_icon: "zoom_in",
+    trophie_icon: "blur_circular",
     isObj: true
   },
   {
@@ -100,7 +100,7 @@ const data = [
     width: 4000,
     height: 3000,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "gradient",
     isObj: true
   },
   {
@@ -113,7 +113,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "pause_circle_outline",
     isObj: true
   },
   {
@@ -126,7 +126,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "photo_album",
     isObj: true
   },
   {
@@ -139,7 +139,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "grain",
     isObj: true
   },
   {
@@ -152,7 +152,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "linear_scale",
     isObj: true
   },
   {
@@ -165,7 +165,7 @@ const data = [
     width: 4096,
     height: 2867,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "camera_alt",
     isObj: true
   },
   {
@@ -178,7 +178,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "android",
     isObj: true
   },
   {
@@ -191,7 +191,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "accessibility",
     isObj: true
   },
   {
@@ -204,7 +204,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "group_work",
     isObj: true
   },
   {
@@ -217,7 +217,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "account_balance",
     isObj: true
   },
   {
@@ -230,7 +230,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "directions_car",
     isObj: true
   },
   {
@@ -243,7 +243,7 @@ const data = [
     width: 2867,
     height: 4096,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "fingerprint",
     isObj: true
   },
   {
@@ -256,7 +256,7 @@ const data = [
     width: 6000,
     height: 2550,
     scale: 1,
-    trophie_icon: "zoom_in",
+    trophie_icon: "directions_run",
     isObj: true
   }
 ];

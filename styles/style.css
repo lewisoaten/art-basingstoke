@@ -184,13 +184,13 @@ body {
 .AR-tip p {
   font-weight: 300;
   color: #000;
-  font-size: 2em;
-  line-height: 1.3em;
+  font-size: 1.2em;
+  line-height: 1em;
 }
 
 .AR-tip h2 {
-  color: #fff;
-  font-weight: 500;
+  color: #000;
+  font-weight: 900;
 }
 
 .gotit {
@@ -326,7 +326,7 @@ body {
 }
 
 .victory {
-  background: #00f;
+  background: #0078ff;
 }
 
 #header {

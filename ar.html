@@ -45,7 +45,7 @@
       </div>
     </div>
     <div id="splashScreen" class="AR-tip" style="display:none">
-      <h1>Art in unusual spaces with Augmented Reality</h1>
+      <h2>Art in unusual spaces with Augmented Reality</h2>
       <p>
         <div>
           <a href="#" class="help" style="font-size:14px;">How it works?</a>
@@ -62,13 +62,13 @@
       <div class="gotit btn custom-button">Start</div>
     </div>
     <div id="trophies" class="AR-tip" style="display:none">
-      <h1>Find all the art around Basingstoke</h1>
+      <h2>Find all the art around Basingstoke</h2>
       <p id="art-found">0/20 found</p>
       <div class="row" id="seenArt"></div>
       <div class="gotit btn custom-button">Done</div>
     </div>
     <div id="map" class="AR-tip" style="display:none">
-      <h1>Full map to be revealed soon</h1>
+      <h2>Full map to be revealed soon</h2>
       <p>Keep exploring in the meantime.</p>
       <div class="gotit btn custom-button">Done</div>
     </div>
@@ -252,8 +252,6 @@
           // Good to go!
           $("#splashScreen").css("display", "block");
 
-          //TEMP
-          trophiesBtn.click();
         } else {
           let template = "<p>This feature is not supported in your browser.</p>";
           $("#noMedia").append(template);

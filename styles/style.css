@@ -90,6 +90,63 @@ body {
   background-position: center;
 }
 
+@-moz-keyframes background-pulse {
+  from {
+    background-size: 60%;
+  }
+
+  50% {
+    background-size: 80%;
+  }
+
+  to {
+    background-size: 60%;
+  }
+}
+
+@-webkit-keyframes background-pulse {
+  from {
+    background-size: 60%;
+  }
+
+  50% {
+    background-size: 80%;
+  }
+
+  to {
+    background-size: 60%;
+  }
+}
+
+@keyframes background-pulse {
+  from {
+    background-size: 60%;
+  }
+
+  50% {
+    background-size: 80%;
+  }
+
+  to {
+    background-size: 60%;
+  }
+}
+
+.pulse {
+  animation-name: background-pulse;
+  animation-duration:0.8s;
+  animation-iteration-count:infinite;
+  animation-timing-function:ease;
+  -webkit-animation-name: background-pulse;
+  -webkit-animation-duration:0.8s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-timing-function:ease;
+  -moz-animation-name: background-pulse;
+  -moz-animation-duration:0.8s;
+  -moz-animation-iteration-count:infinite;
+  -moz-animation-timing-function:ease;
+}
+
 .btn:hover {
   border: 2px solid #fff;
 }

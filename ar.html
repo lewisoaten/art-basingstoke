@@ -183,8 +183,10 @@
         if (trophies == "") trophies = {};
         if (!trophies[number]) {
             trophies[number] = true;
-            setCookie("trophies", trophies, 14)
+            setCookie("trophies", trophies, 365)
             updateTrophies();
+
+            $(".trophies").addClass("pulse");
 
             ga('send', {
               hitType: 'event',
@@ -236,6 +238,7 @@
             'screenName': 'trophies'
           });
           gotitBtn.click();
+          $(".trophies").removeClass("pulse");
           $("#trophies").show();
         });
 

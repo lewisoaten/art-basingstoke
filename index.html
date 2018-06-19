@@ -208,6 +208,16 @@
         }
       }
 
+      //Camera feature check
+      function hasGetUserMedia() {
+        return !!(
+          navigator.getUserMedia ||
+          navigator.webkitGetUserMedia ||
+          navigator.mozGetUserMedia ||
+          navigator.msGetUserMedia
+        );
+      }
+
       $(document).ready(function() {
         var helpBtn = $(".help"),
           gotitBtn = $(".gotit"),
@@ -260,17 +270,6 @@
           gotitBtn.click();
           $("#map").show();
         });
-
-
-        //Camera feature check
-        function hasGetUserMedia() {
-          return !!(
-            navigator.getUserMedia ||
-            navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia ||
-            navigator.msGetUserMedia
-          );
-        }
 
         if (hasGetUserMedia()) {
           // Good to go!

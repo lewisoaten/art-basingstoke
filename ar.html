@@ -334,10 +334,14 @@
         }
       }
 
-      navigator.mediaDevices
-        .enumerateDevices()
-        .then(gotDevices)
-        .catch(handleError);
+      if (hasGetUserMedia()) {
+        navigator.mediaDevices
+          .enumerateDevices()
+          .then(gotDevices)
+          .catch(handleError);
+        } else {
+          console.log("Can't add cameras as no mediaDevices");
+        }
 
       function gotStream(stream) {
         // renderer.domElement.srcObject = stream; // make stream available to console

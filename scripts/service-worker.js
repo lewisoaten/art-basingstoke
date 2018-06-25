@@ -15,6 +15,8 @@ let urlsToCache = [
   "../assets/3d-model.obj",
   "../assets/camera_para.dat",
 
+  "../assets/27348 ARt Basingstoke map - flyer.jpg",
+
   "../assets/Studentbb copy.jpg",
   "../assets/Maddie1 copy.jpg",
   "../assets/All_Our_Own_Crafts copy.jpg",

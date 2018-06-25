@@ -225,7 +225,7 @@ body {
   z-index: 9999;
   padding: 10px 29px 26px;
   min-width: 300px;
-  max-width: 400px;
+  max-width: 600px;
   display: block;
   background: #fff;
   position: fixed;
@@ -248,6 +248,11 @@ body {
 .AR-tip h2 {
   color: #000;
   font-weight: 900;
+}
+
+.AR-tip img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .gotit {
